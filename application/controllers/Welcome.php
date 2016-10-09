@@ -22,4 +22,13 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+	public function test()
+	{
+		$query = $this->db->query('select * from Users');
+		foreach($query->result() as $row)
+		{
+			echo $row -> Name;
+		}		
+		echo 'Total Results: ' . $query->num_rows();
+	}
 }

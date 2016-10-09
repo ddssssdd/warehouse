@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteBase /warehouse/
+
+RewriteCond $1 !^(index\.php|template|upload|uploads)
+RewriteRule ^(.*)$ index.php/$1 [L]
