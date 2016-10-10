@@ -83,3 +83,37 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+define('HTTP_REFERER', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
+define('SITE_URL', '/aci/');#初始安装，请在这里修改,为实际目录
+define('SKIN_PATH', SITE_URL.'css/');
+define('SYS_STYLE',  'default');
+define('EXT',  '.php');
+
+
+
+define('BASE_CSS_PATH',  SITE_URL.'css/');
+define('BASE_JS_PATH', SITE_URL.'scripts/');
+define('IMG_PATH', SITE_URL.'images/');
+define('UPLOAD_URL', SITE_URL.'uploadfile/');
+define('UPLOAD_TEMP_URL', SITE_URL.'uploadfile/temp/');
+define('UPLOAD_PATH',FCPATH.'/uploadfile/');
+define('UPLOAD_TEMP_PATH',''.FCPATH.'/uploadfile/temp/');
+define('INTALL_UPLOAD_TEMP_PATH',''.FCPATH.'/uploadfile/temp/install');
+
+define('SYS_TIME', time());
+
+define('SITE_NAME','ACI-WEB管理系统 ');
+define('WEBSITE_BASE_NAME','ACI-WEB管理系统');
+
+
+define('SUPERADMIN_GROUP_ID',  1);
+define('REGISTER_GROUP_ID',  3);
+define('DEMO_STATUS',  FALSE);//演示版本状态，有权限控制
+define('SETUP_BACKUP_OVERWRITE_FILES', FALSE);#是否备份存在的模块文件
+
+
+define('ADMIN_URL_PATH',  SITE_URL.'adminpanel/');
+define('ADMIN_CSS_PATH',  SITE_URL.'css/adminpanel/');
+define('ADMIN_IMG_PATH', SITE_URL.'images/adminpanel/');
