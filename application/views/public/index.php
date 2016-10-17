@@ -21,7 +21,16 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right navbar-icon-menu">
                         <li>
-                            <a href="/home"> <i class="fa fa-book"></i><span>Menu</span></a>
+                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-home"></i><span>首页</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-list-ol"></i><span>Warehouse</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-street-view"></i><span>Menu</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-book"></i><span>Menu</span></a>
                         </li>
                         
                     </ul>
@@ -36,14 +45,17 @@
                         
                             <div class="list-group">
                                 <a href="#" class="list-group-item disabled">Top Menu Name</a>
-                                        <a href="#"
-                                           class="list-group-item current-active>Sub Menu Name<i class="fa fa-chevron-right"></i></a>
+                                <a href="#" class="list-group-item current-active">Sub Menu Name<i class="fa fa-chevron-right"></i></a>
+                                <a href="#" class="list-group-item">Sub Menu Name2<i class="fa fa-chevron-right"></i></a>
+                                <a href="#" class="list-group-item">Sub Menu Name3<i class="fa fa-chevron-right"></i></a>
+                                <a href="#" class="list-group-item">Sub Menu Name4<i class="fa fa-chevron-right"></i></a>
                             </div>
                         
                     </aside>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2" style="padding:0px;padding-top: 80px; ">
-                    <div class="text-right pull-right" style="padding-right: 10px;"> <i class="fa fa-user"></i> Admin [ Admin ], <a href="<?php echo base_url('adminpanel/manage/logout')?>">注销</a></div>
+                    <div class="text-right pull-right" style="padding-right: 10px;"> 
+                        <i class="fa fa-user"></i> Admin [ Admin ], <a href="<?php echo base_url('home/logout')?>">注销</a></div>
 
                     <ul class='breadcrumb' id='breadcrumb'>
                          Current_pos

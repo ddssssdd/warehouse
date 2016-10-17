@@ -86,7 +86,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 define('HTTP_REFERER', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
-define('SITE_URL', '/aci/');#初始安装，请在这里修改,为实际目录
+define('SITE_URL', '/warehouse/');#初始安装，请在这里修改,为实际目录
 define('SKIN_PATH', SITE_URL.'css/');
 define('SYS_STYLE',  'default');
 define('EXT',  '.php');
@@ -104,8 +104,8 @@ define('INTALL_UPLOAD_TEMP_PATH',''.FCPATH.'/uploadfile/temp/install');
 
 define('SYS_TIME', time());
 
-define('SITE_NAME','ACI-WEB管理系统 ');
-define('WEBSITE_BASE_NAME','ACI-WEB管理系统');
+define('SITE_NAME','Yifan-System ');
+define('WEBSITE_BASE_NAME','Yifan-System');
 
 
 define('SUPERADMIN_GROUP_ID',  1);
