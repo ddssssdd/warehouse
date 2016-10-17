@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="container">
-    <form class="form-signin" role="form" action="login"  method="post" id="validateform" name="validateform">
+    <form class="form-signin" role="form" action="<?php base_url("/home/login") ?>"  method="post" id="validateform" name="validateform">
         <div class="form-signin-body">
 
             <div class="form-group">
