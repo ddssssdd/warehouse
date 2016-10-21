@@ -38,7 +38,7 @@
             </div>
         </nav>
 
-        <div class="container-fluid">
+        <div class="container-fluid" ng-controller="SubMenuCtrl">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                      <aside>

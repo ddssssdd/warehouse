@@ -22,6 +22,11 @@
 <script src="<?php echo base_url('/scripts/lib/jquery.validationEngine.js')?>" ></script>
 <script src="<?php echo base_url('/scripts/lib/global.js')?>"></script>
 
+<script src="<?php echo base_url('/scripts/lib/angular.min.js')?>"></script>
+<script src="<?php echo base_url('/scripts/lib/angular-md5.min.js')?>"></script>
+<script src="<?php echo base_url('/scripts/layer/layer.js')?>"></script>
+<script src="<?php echo base_url('/scripts/common.js')?>"></script>
+
  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="<?php echo base_url(ADMIN_CSS_PATH.'ie8-responsive-file-warning.js')?>"></script><![endif]-->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -30,5 +35,9 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body >
+<body ng-app="Warehouse-app" >
+<script>
+	angular.module("Warehouse-app",["commonService"]);
+</script>
+	
 <div id="dialog" style="padding:0px;"></div>
