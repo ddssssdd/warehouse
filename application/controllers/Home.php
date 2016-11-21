@@ -39,4 +39,14 @@ class Home extends Front_Controller
 		$this->session->sess_destroy();
 		redirect(base_url('home/login'));
 	}
+
+	public function test(){
+		$this->load->model("vendor_model");
+		$data = $this->vendor_model->AddVendor("vendor2","139532","email","address","fax");
+		//$data = $this->vendor_model->Exists("test1");
+		//$data = $this->vendor_model->Items();
+		$this->output
+    		->set_content_type('application/json')
+    		->set_output(json_encode(array('foo' => 'bar','rows' => $data)));
+	}
 }
