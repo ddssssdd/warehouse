@@ -35,10 +35,14 @@ class MY_Controller extends CI_Controller
 
 		$this->load->view(reduce_double_slashes($view_file),$sub_page_data);
 	}
-
+	protected function success_json($data){
+		return $this->json(array("status" => true,"result"=>$data));
+	}
+	protected function failure_json($message){
+		return $this->json(array("status"=>false,"message"=>$message));
+	}
 	protected function json($data)
 	{
-		$data = array_merge($data, $this->page_data);
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));		
 	}
 }

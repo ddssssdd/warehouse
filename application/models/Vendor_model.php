@@ -1,10 +1,10 @@
-<?php
-class Vendor_model extends CI_Model
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+class Vendor_model extends MY_Model
 {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->database();
+		
 	}
 	
 	public function Items()
@@ -27,6 +27,12 @@ class Vendor_model extends CI_Model
 		$vendor = array("Name" => $name,"Phone" =>$phone, "Email" =>$email, "Address" => $phone, "Fax" => $fax);
 		$this->db->insert("Vendors",$vendor);
 		return $this->Items();
+	}
+	public function EditVendor($id,$phone,$email,$address,$fax){
+		$vendor = array("Phone" =>$phone, "Email" =>$email, "Address" => $phone, "Fax" => $fax);
+		$this->db->update("Vendors",$vendor,array("Id"=>$id));
+		$query = $this->db->get_where("Vendors",array("Id"=>$id));
+        return $query->row();
 	}
 
 }
