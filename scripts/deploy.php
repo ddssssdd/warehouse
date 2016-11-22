@@ -1,8 +1,5 @@
 <?php
-// Reject anyone who's not GitHub
-if (!in_array($_SERVER['REMOTE_ADDR'], array('207.97.227.253', '50.57.128.197', '108.171.174.178'))) {
-        exit('Go away!');
-}
+
 require_once 'Class/postmark.php';
 $postmark = new Postmark('postmark-app-key');
 $postmark->setFrom('From you thoughts-go.top');
