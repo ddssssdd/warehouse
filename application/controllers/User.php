@@ -1,13 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Vendor extends Front_Controller
+class User extends Front_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model("vendor_model","Model");
+        $this->load->model("user_model","Model");
     }
+    
     public function Items()
     {
         $data = $this->Model->Items();
@@ -17,7 +18,7 @@ class Vendor extends Front_Controller
     {
         $name = $this->input->post_get("name");
         if (!$name){
-            return $this->failure_json("input vendor name.");
+            return $this->failure_json("input user name.");
         }
         $found = $this->Model->Exists($name);
         return $this->success_json($found);
@@ -26,27 +27,25 @@ class Vendor extends Front_Controller
     {
         $name= $this->input->post_get("name");
         if (!$this->Model->Exists($name)){
-            $data = $this->Model->AddVendor($name,
-            $this->input->post_get("phone"),
+            $data = $this->Model->AddItem($name,
+            $this->input->post_get("cellphone"),
             $this->input->post_get("email"),
-            $this->input->post_get("address"),
-            $this->input->post_get("fax"));
+            $this->input->post_get("password"));
             return $this->success_json($data);
         }else{
-            return $this->failure_json("Vendor name exists");
+            return $this->failure_json("User name exists");
         }
     }
      public function Edit()
     {
         $id = $this->input->post_get("id");
         if (!$id){
-            return $this->failure_json("Please input the vendor Id");
+            return $this->failure_json("Please input the user Id");
         }
-        $data = $this->Model->EditVendor($id,            
-            $this->input->post_get("phone"),
-            $this->input->post_get("email"),            
-            $this->input->post_get("address"),
-            $this->input->post_get("fax")
+        $data = $this->Model->EditItem($id,            
+            $this->input->post_get("cellphone"),
+            $this->input->post_get("email"),
+            $this->input->post_get("password")
         );
         return $this->success_json($data);
 

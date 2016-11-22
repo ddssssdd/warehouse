@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Vendor extends Front_Controller
+class Client extends Front_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model("vendor_model","Model");
+        $this->load->model("client_model","Model");
     }
     public function Items()
     {
@@ -17,7 +17,7 @@ class Vendor extends Front_Controller
     {
         $name = $this->input->post_get("name");
         if (!$name){
-            return $this->failure_json("input vendor name.");
+            return $this->failure_json("input client name.");
         }
         $found = $this->Model->Exists($name);
         return $this->success_json($found);
@@ -26,23 +26,23 @@ class Vendor extends Front_Controller
     {
         $name= $this->input->post_get("name");
         if (!$this->Model->Exists($name)){
-            $data = $this->Model->AddVendor($name,
+            $data = $this->Model->AddClient($name,
             $this->input->post_get("phone"),
             $this->input->post_get("email"),
             $this->input->post_get("address"),
             $this->input->post_get("fax"));
             return $this->success_json($data);
         }else{
-            return $this->failure_json("Vendor name exists");
+            return $this->failure_json("Client name exists");
         }
     }
-     public function Edit()
+    public function Edit()
     {
         $id = $this->input->post_get("id");
         if (!$id){
-            return $this->failure_json("Please input the vendor Id");
+            return $this->failure_json("Please input the client Id");
         }
-        $data = $this->Model->EditVendor($id,            
+        $data = $this->Model->EditClient($id,            
             $this->input->post_get("phone"),
             $this->input->post_get("email"),            
             $this->input->post_get("address"),

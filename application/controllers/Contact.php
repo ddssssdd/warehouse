@@ -11,7 +11,7 @@ class Contact extends Front_Controller
     public function Items()
     {
         $data = $this->Model->Items();
-        return $this->json($data);
+        return $this->success_json($data);
     }
     
     public function Add()
