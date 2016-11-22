@@ -45,6 +45,6 @@ class Home extends Front_Controller
 		
 		$this->output
     		->set_content_type('application/json')
-    		->set_output(json_encode(array('foo' => 'bar','rows' => 'hello222.')));
+    		->set_output(json_encode(array('foo' => 'bar','rows' => 'hellohome.')));
 	}
 }
