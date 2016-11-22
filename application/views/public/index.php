@@ -44,7 +44,7 @@
                      <aside>
                         
                             <div class="list-group">
-                                <a href="#" class="list-group-item disabled">Top Menu Name</a>
+                                <a href="#" class="list-group-item disabled">Stores</a>
                                 <a href="#" class="list-group-item current-active">Sub Menu Name<i class="fa fa-chevron-right"></i></a>
                                 <a href="#" class="list-group-item">Sub Menu Name2<i class="fa fa-chevron-right"></i></a>
                                 <a href="#" class="list-group-item">Sub Menu Name3<i class="fa fa-chevron-right"></i></a>

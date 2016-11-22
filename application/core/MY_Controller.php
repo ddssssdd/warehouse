@@ -10,6 +10,7 @@ class MY_Controller extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+
 		$this->load->helper(array('global','url','string','text','language','auto_codeIgniter_helper'));
 
 		$this->page_data['folder_name']=trim(substr($this->router->directory, 0, -1)) ;
@@ -21,6 +22,8 @@ class MY_Controller extends CI_Controller
 		$this->page_data['title'] = 'title';
 		$this->page_data['keyword'] = 'keywords';
 		$this->page_data['description'] = 'description';
+		
+		$this->session->set_userdata(array("userId"=>1,"name"=>"steven","email"=>"a@a.com"));
 	}
 	protected function showmessage($msg, $url_forward = '', $ms = 500, $dialog = '', $returnjs = '') {
 
@@ -50,16 +53,11 @@ class Front_Controller extends MY_Controller
 {
 	function __construct(){
 		parent::__construct();
+		$this->user = array("userId"=>$this->session->userId,"name" =>$this->session->name,"email"=>$this->session->email);
 	}
+	public $user;
 
-	/**
-	 * 自动模板调用
-	 *
-	 * @param $module
-	 * @param $template
-	 * @param $istag
-	 * @return unknown_type
-	 */
+	
 	protected function view($view_file,$page_data=array(),$cache=false)
 	{
 		$view_file= $this->page_data['folder_name'].DIRECTORY_SEPARATOR.$this->page_data['controller_name'].DIRECTORY_SEPARATOR.$view_file;		

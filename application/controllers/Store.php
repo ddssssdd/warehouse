@@ -8,6 +8,14 @@ class Store extends Front_Controller
         parent::__construct();
         $this->load->model("store_model","Model");
     }
+
+    public function index()
+    {
+        $data["user"] = $this->user;
+        $this->load->view("share/header");
+		$this->load->view("store/index",$data);
+		$this->load->view("share/footer");
+    }
     
     public function Items()
     {

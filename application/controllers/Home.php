@@ -41,10 +41,15 @@ class Home extends Front_Controller
 	}
 
 	public function test(){
-		
-		
 		$this->output
     		->set_content_type('application/json')
     		->set_output(json_encode(array('foo' => 'bar','rows' => 'hellohome.')));
+	}
+
+	public function standard()
+	{
+		$this->load->view("share/header");
+		$this->load->view("home/standard");
+		$this->load->view("share/footer");
 	}
 }
