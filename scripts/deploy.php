@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Class/postmark.php';
-$postmark = new Postmark('postmark-app-key');
+$postmark = new Postmark('fc5f5246-b238-4878-bafb-b3d59d3abba0');
 $postmark->setFrom('From you thoughts-go.top');
 $postmark->addTo('a060116@163.com');
 $postmark->addTo('fuxinyu@gmail.com');
