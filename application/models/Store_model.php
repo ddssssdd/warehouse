@@ -45,5 +45,9 @@ class Store_model extends MY_Model
 		$query = $this->db->get_where($this->tableName,array("Id"=>$id));
         return $query->row();
 	}
-
+	public function RemoveItem($id)
+	{
+		$this->db->query("delete from Stores where Id=".$id);
+		return;
+	}
 }

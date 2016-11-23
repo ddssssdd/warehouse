@@ -16,6 +16,13 @@ class Store extends Front_Controller
 		$this->load->view("store/index",$data);
 		$this->load->view("share/footer");
     }
+    public function manage()
+    {
+        $data["user"] = $this->user;
+        $this->load->view("share/header");
+		$this->load->view("store/manage",$data);
+		$this->load->view("share/footer");
+    }
     
     public function Items()
     {
@@ -59,5 +66,14 @@ class Store extends Front_Controller
         );
         return $this->success_json($data);
 
+    }
+    public function Remove()
+    {
+        $id = $this->input->post_get("id");
+        if (!$id){
+            return $this->failure_json("Please input the ".$this->Model->Name." Id");
+        }
+        $this->Model->RemoveItem($id);
+        $this->success_json($id);
     }
 }
