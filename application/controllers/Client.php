@@ -8,6 +8,13 @@ class Client extends Front_Controller
         parent::__construct();
         $this->load->model("client_model","Model");
     }
+    public function index(){
+        $data["user"] = $this->user;
+        $this->load->view("share/header");
+		$this->load->view("client/index",$data);
+		$this->load->view("share/footer");
+    }
+    /*json*/
     public function Items()
     {
         $data = $this->Model->Items();
@@ -30,7 +37,10 @@ class Client extends Front_Controller
             $this->input->post_get("phone"),
             $this->input->post_get("email"),
             $this->input->post_get("address"),
-            $this->input->post_get("fax"));
+            $this->input->post_get("fax"),
+            $this->input->post_get("contactName"),
+            $this->input->post_get("contactCellphone")
+            );
             return $this->success_json($data);
         }else{
             return $this->failure_json("Client name exists");

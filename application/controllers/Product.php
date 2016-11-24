@@ -8,7 +8,13 @@ class Product extends Front_Controller
         parent::__construct();
         $this->load->model("product_model","Model");
     }
-    
+    public function index(){
+        $data["user"] = $this->user;
+        $this->load->view("share/header");
+		$this->load->view("product/index",$data);
+		$this->load->view("share/footer");
+    }
+    /*json*/
     public function Items()
     {
         $data = $this->Model->Items();
