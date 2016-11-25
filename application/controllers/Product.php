@@ -14,6 +14,14 @@ class Product extends Front_Controller
 		$this->load->view("product/index",$data);
 		$this->load->view("share/footer");
     }
+    public function editor(){
+        $product_id = $this->input->post_get("id");
+        $data["user"] = $this->user;
+        $data["id"] = $product_id?$product_id:0;
+        $this->load->view("share/header");
+        $this->load->view("product/edit",$data);
+        $this->load->view("share/footer");   
+    }
     /*json*/
     public function Items()
     {

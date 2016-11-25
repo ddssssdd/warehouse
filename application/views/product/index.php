@@ -9,6 +9,106 @@
         products
     </ul>
     <div style="padding: 0px 10px"> 
+        <div class="panel panel-default grid">
+    <div class="panel-heading">
+        <i class="glyphicon glyphicon-th-list"></i> 成员列表
+        <div class="panel-tools">
+
+            <div class="btn-group">
+                <a href="http://localhost:8000/aci/adminpanel/user/add" class="btn  btn-sm "><span class="glyphicon glyphicon-plus"></span> 添加</a>            </div>
+            <div class="badge">2</div>
+        </div>
+    </div>
+    <div class="panel-filter ">
+        <form class="form-inline" role="form" method="get">
+            <div class="form-group">
+                <label for="keyword" class="form-control-static control-label">关键词</label>
+                <input class="form-control" type="text" name="keyword" value="" id="keyword" placeholder="请输入关键词"></div>
+            <button type="submit" name="dosubmit" value="搜索" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+        </form>
+    </div>
+    <form method="post" id="form_list">
+        <div class="panel-body ">
+            <table class="table table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th></th>
+                        <th>用户名</th>
+                        <th>全名</th>
+                        <th>邮箱</th>
+                        <th>手机号</th>
+                        <th>会员组</th>
+                        <th>上次登录时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                            <tr>
+                            <td><input type="checkbox" name="pid[]" value="1"></td>
+                            <td> <span class="glyphicon glyphicon-user"></span></td>
+                            <td>test</td>
+                            <td>胡子锅</td>
+                            <td>hubinjie@live.cn</td>
+                            <td>13099999999</td>
+                            <td>超级管理员</td>
+                            <td>2016-11-25 01:31:40</td>
+                            <td>
+                                <a href="http://localhost:8000/aci/adminpanel/user/edit/1" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> 修改</a>                            </td>
+                        </tr>
+                                            <tr>
+                            <td><input type="checkbox" name="pid[]" value="2"></td>
+                            <td> <span class="glyphicon glyphicon-lock"></span></td>
+                            <td>xiaoer</td>
+                            <td>小二</td>
+                            <td>lyhuc@163.com</td>
+                            <td>13099999999</td>
+                            <td>普通管理员</td>
+                            <td></td>
+                            <td>
+                                <a href="http://localhost:8000/aci/adminpanel/user/edit/2" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> 修改</a>                            </td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+
+        </div>
+        <div class="panel-footer">
+           <div class="pull-left">
+             <div class="btn-group">
+                <button type="button" class="btn btn-default" id="reverseBtn"><span class="glyphicon glyphicon-ok"></span> 反选</button>
+                <button class="btn btn-default" id="lockBtn"><span class="glyphicon glyphicon-lock"></span> 反设置禁止登录</button>                        
+                <button class="btn btn-default" id="deleteBtn"><span class="glyphicon glyphicon-remove"></span> 删除勾选</button>                    
+            </div>
+            </div>
+            <div class="pull-right">
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td><input type='text' ng-model="new_item.name" placeholder="名称"></td>
+                        <td><input type='text' ng-model="new_item.specification" placeholder="规格"></td>
+                        <td><input type='phone' ng-model="new_item.unit" placeholder="单位"></td>
+                        <td><input type='text' ng-model="new_item.length" placeholder="长度"></td>
+                        <td><input type='text' ng-model="new_item.width" placeholder="宽度"></td>
+                        <td><input type='text' ng-model="new_item.height" placeholder="高度"></td>
+                        <td><input type='text' ng-model="new_item.brand" placeholder="品牌"></td>
+                        <td><input type='text' ng-model="new_item.barcode" placeholder="条码"></td>
+                        
+                        <td>
+                                           
+                            <a href="javascript:void(0);" ng-click="new_product($event)" class="btn btn-default btn-xs">
+                                <span class="glyphicon glyphicon-plus"></span> 新建
+                            </a>
+                        </td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+
+    </form>
+</div>
         <h3 class="page-header">
             <a href="#" class="btn btn-info btn-sm pull-right">
                 <span class="glyphicon glyphicon-plus"></span> 安装新模块</a>
@@ -17,9 +117,9 @@
         <div class="alert alert-success alert-dismissible" role="alert">
             <strong>友情提示</strong> Please believe in God.
         </div> 
-        <div class="panel panel-default">
-            <div class="table-responsive">
-                <table class="table table-hover" style="width:100%">
+        <div class="panel panel-default grid">
+            <div class="panel-body">
+                <table class="table table-hover dataTable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -54,24 +154,7 @@
                             </a>
                         </td>
                         </tr>
-                        <tr>
-                        <td></td>
-                        <td><input type='text' ng-model="new_item.name" placeholder="名称"></td>
-                        <td><input type='text' ng-model="new_item.specification" placeholder="规格"></td>
-                        <td><input type='phone' ng-model="new_item.unit" placeholder="单位"></td>
-                        <td><input type='text' ng-model="new_item.length" placeholder="长度"></td>
-                        <td><input type='text' ng-model="new_item.width" placeholder="宽度"></td>
-                        <td><input type='text' ng-model="new_item.height" placeholder="高度"></td>
-                        <td><input type='text' ng-model="new_item.brand" placeholder="品牌"></td>
-                        <td><input type='text' ng-model="new_item.barcode" placeholder="条码"></td>
                         
-                        <td>
-                                           
-                            <a href="javascript:void(0);" ng-click="new_product($event)" class="btn btn-default btn-xs">
-                                <span class="glyphicon glyphicon-plus"></span> 新建
-                            </a>
-                        </td>
-                        </tr>
                     </tbody>
                 </table>
     	    </div>
