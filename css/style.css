@@ -462,7 +462,7 @@ a.square:hover {
 
 .navbar-default .navbar-brand {
   color: white;
-  background-image: url('../../images/sys_logo.gif');
+  background-image: url('../images/sys_logo.gif');
   background-repeat: none;
   padding-left: 75px;
   font-family: "Arial","黑体";

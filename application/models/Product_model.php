@@ -16,6 +16,12 @@ class Product_model extends MY_Model
 		return $query->result();
 
 	}
+	public function Find($id)
+	{
+		$this->db->where("Id",$id);
+		$query = $this->db->get("Products");
+		return $query->row();
+	}
 
 	public function Exists($name){
 		$this->db->where("Name",$name);

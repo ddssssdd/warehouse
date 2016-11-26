@@ -110,8 +110,8 @@
     </form>
 </div>
         <h3 class="page-header">
-            <a href="#" class="btn btn-info btn-sm pull-right">
-                <span class="glyphicon glyphicon-plus"></span> 安装新模块</a>
+            <a href="<?php echo base_url('product/editor?id=0') ?>" class="btn btn-info btn-sm pull-right">
+                <span class="glyphicon glyphicon-plus"></span> 新建产品</a>
                 商品
         </h3>
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -146,8 +146,8 @@
                         <td>{{item.Brand}}</td>
                         <td>{{item.Barcode}}</td>
                         <td>
-                             <a href="javascript:void(0);" class="btn btn-default btn-xs">
-                                <span class="glyphicon glyphicon-stop"></span> 编辑
+                             <a href="<?php echo base_url('product/editor') ?>?id={{item.Id}}" class="btn btn-default btn-xs">
+                                <span class="glyphicon glyphicon-edit"></span> 编辑
                             </a>               
                             <a href="javascript:void(0);" ng-click="remove_product($event,item,$index);" class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-remove"></span> 删除
