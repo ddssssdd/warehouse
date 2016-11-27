@@ -22,12 +22,8 @@ class Stocks extends Front_Controller
     {
         //$data = $_REQUEST;
         $data = $this->input->post(NULL,TRUE);
-        $items = array();
         foreach($data["details"] as &$item){
-            if ($item["ProductId"]==0){
-                $item["ProductId"]=1;
-                $items[]=$item;
-            }
+            
         }
         $result = $this->Model->SaveStockIn($data,$this->user["userId"]);
         $this->success_json($result);

@@ -28,14 +28,14 @@
                                 ng-options="item.Id as item.Name for item in vendors">
                             </select>
                             <label  class="form-control-static control-label">入库日期</label>
-                            <input class="form-control" type="text"  placeholder=""  ng-model="order.EnteredDate">
+                            <input class="form-control" type="datetime"  placeholder=""  ng-model="order.EnteredDate">
                             <br/>
                             <label for="keyword" class="form-control-static control-label">总价</label>
-                            <input class="form-control" type="text"  placeholder="" ng-model="order.TotalPrice">
+                            <input class="form-control" type="number"  placeholder="" ng-model="order.TotalPrice">
                             <label for="keyword" class="form-control-static control-label">总数量</label>
-                            <input class="form-control" type="text"  placeholder="" ng-model="order.TotalNo">
+                            <input class="form-control" type="number"  placeholder="" ng-model="order.TotalNo">
                             <label for="keyword" class="form-control-static control-label">仓库</label>
-                            <select class="form-control" ng-model="order.StoreId" 
+                            <select class="form-control" ng-model="order.StoreId" ng-change="order_change_store($event)"
                                 ng-options="item.Id as item.Name for item in stores">
                                 
                             </select>
@@ -59,6 +59,7 @@
                         <th>规格</th>
                         <th>单价</th>
                         <th>数量</th>
+                        <th>合计</th>
                         <th>仓库</th>
                         <th>备注</th>
                         <th>操作</th>
@@ -73,7 +74,7 @@
                                     <span class="glyphicon glyphicon-user"></span>
                                 </td>
                                 <td>
-                                    {{detail.ProductId}}
+                                    {{find_product(detail.ProductId).Name}}
                                 </td>
                                 <td>
                                     {{detail.Specification}}
@@ -85,11 +86,15 @@
                                     {{detail.Quantity}}
                                 </td>
                                 <td>
-                                    {{detail.StoreId}}
+                                    {{detail.Total}}
+                                </td>
+                                <td>
+                                    {{find_store(detail.StoreId).Name}}
                                 </td>
                                 <td>
                                     {{detail.Memo}}
                                 </td>
+                                
                                 <td>
                                     <a href="javascript:void(0)" class="btn btn-default btn-xs" ng-click="remove_detail($index,$event)">
                                     <span class="glyphicon glyphicon-remove"></span> 删除
@@ -102,7 +107,8 @@
                             </td>
                             <td> </td>
                             <td>
-                                <select ng-model="detail.ProductId" ng-options="p.Id as p.Name for p in products">
+                                <select ng-model="detail.ProductId" ng-change="detail_change_product($event)" 
+                                    ng-options="p.Id as p.Name for p in products">
                                 </select>
                             </td>
                             <td>
@@ -113,6 +119,8 @@
                             </td>
                             <td>
                                 <input type="number" ng-model="detail.Quantity" />
+                            </td>
+                            <td>
                             </td>
                             <td>
                                 <select ng-model="detail.StoreId" ng-options="s.Id as s.Name for s in stores">
@@ -167,12 +175,12 @@
 <script>
 
 
-angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpService){
+angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpService,Message){
 	$scope.products = [];
     $scope.vendors = [];
     $scope.stores = [];
-    $scope.order = {Id:0,details:[]};
-    $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:0};
+    $scope.order = {Id:0,details:[],VendorId:0,StoreId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:''};
+    $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:0,Memo:''};
     $scope.init_in = function(){
         var url1 = "<?php echo base_url('product/items')?>";
         httpService(url1,{},function(json){
@@ -191,10 +199,31 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
             }
         });
     }
+    $scope.process_order = function (order){
+        order.TotalPrice = order.TotalPrice*1;
+        order.TotalNo = order.TotalNo*1;
+        for(var i=0;i<order.details.length;i++){
+            order.details[i].Price =order.details[i].Price *1;
+            order.details[i].Quantity =order.details[i].Quantity *1;
+            order.details[i].Toal =order.details[i].Quantity *order.details[i].Price;
+        }
+        $scope.order = order;
+    }
     $scope.add_detail = function(event)
     {
+        
         $scope.order.details.push($scope.detail);
-        $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:0};
+        var sum = 0;
+        var q = 0;
+        for(var i=0;i<$scope.order.details.length;i++){
+            var item = $scope.order.details[i];
+            item.Total = item.Price * item.Quantity;
+            sum += item.Total;
+            q += item.Quantity;
+        }
+        $scope.order.TotalPrice = sum;
+        $scope.order.TotalNo = q;
+        $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:$scope.order.StoreId,Memo:''};
     }
     $scope.remove_detail = function(index,event){
         if ($scope.order.details){
@@ -207,9 +236,49 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
         httpService(url,$scope.order,function(json){
             console.log(json);
             if (json.status){
-                $scope.order = json.result;
+                $scope.process_order(json.result);
+                Message.show("入库单存储成功！");
             }
         });
+    }
+    $scope.order_change_store = function(event)
+    {
+        $scope.detail.StoreId = $scope.order.StoreId;
+    }
+    $scope.detail_change_product = function(event){
+        var product = $scope.find_product($scope.detail.ProductId);
+        if (product){
+            $scope.detail.Price = product.Price*1;
+            $scope.detail.Specification = product.specification;
+            $scope.detail.Quantity = 1;
+        }
+        
+    }
+    $scope.find_product = function(id){
+        var p = $scope.find_in_array($scope.products,id);
+        if (p){
+            return p;
+        }else{
+            return null;
+        }
+    }
+    $scope.find_store = function(id){
+        var s = $scope.find_in_array($scope.stores,id);
+        if (s){
+            return s;
+        }else{
+            return null;
+        }
+    }
+    $scope.find_in_array = function(arr,Id)
+    {
+        for(var i=0;i<arr.length;i++){
+            if (Id==arr[i].Id){
+                return arr[i];
+            }
+        }
+        return null;
+
     }
     $scope.new_product = function(event){
         
