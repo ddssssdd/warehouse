@@ -7,10 +7,16 @@ class User_model extends MY_Model{
 		parent::__construt();	
 		
 	}
+	
 	function find($username,$password)
 	{
 		$query = $this->db->get_where("Users",array("Name"=>$username,"Password"=>$password));
-		return $query->row_array();
+		$row = $query->row();
+		if (isset($row)){
+			return $row;
+		}
+		return NULL;
+		
 	}
 	public function Items()
 	{

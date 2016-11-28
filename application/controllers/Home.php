@@ -8,7 +8,8 @@ class Home extends Front_Controller
 	}	
 	public function index()
 	{
-		$this->view('index',array());		
+		$data = $this->user;
+		$this->view('index',$data);		
 	}
 	public function login()
 	{
@@ -16,19 +17,19 @@ class Home extends Front_Controller
 			$username = isset($_POST['username']) ? trim($_POST['username']) : exit(json_encode(array('status'=>false,'message'=>' 用户名不能为空')));
 			if($username=="")exit(json_encode(array('status'=>false,'message'=>' 用户名不能为空')));
 						//查询帐号，默认组1为超级管理员
-			$this->load->model("users_model");
+			$this->load->model("user_model");
 
-			$r = $this->users_model->find($username,$_POST["password"]);
+			$r = $this->user_model->find($username,$_POST["password"]);
 			
 			if(!$r) exit(json_encode(array('status'=>false,'tips'=>' 用户名或密码不正确')));			
 
 			//$ip = $this->input->ip_address();
 			
-			$this->session->set_userdata('user_id',$r['Id']);
-			$this->session->set_userdata('name',$r['Name']);
-			$this->session->set_userdata('email',$r["Email"]);
+			$this->session->set_userdata('userId',$r->Id);
+			$this->session->set_userdata('name',$r->Name);
+			$this->session->set_userdata('email',$r->Email);
 
-			redirect(base_url('home/index'));
+			redirect(base_url('store/index'));
 
 		}else {
 			$this->view_empty("login",array());

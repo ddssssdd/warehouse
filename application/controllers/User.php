@@ -50,4 +50,14 @@ class User extends Front_Controller
         return $this->success_json($data);
 
     }
+    public function login(){
+        $username = $this->input->post_get("Username");
+        $password = $this->input->post_get("Password");
+        $result = $this->Model->find($username,$password);
+        if ($result){
+            return $this->success_json($result);
+        }else{
+            return $this->failure_json("Can not find match user");
+        }
+    }
 }
