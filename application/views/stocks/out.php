@@ -173,7 +173,7 @@ angular.module("Warehouse-app").controller("StocksOutCtrl",function($scope,httpS
 	$scope.products = [];    
     $scope.clients = [];
     $scope.stores = [];
-    $scope.order = {Id:0,details:[],ClientId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:''};
+    $scope.order = {Id:0,details:[],ClientId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:'',EnteredDate:new Date().Format("yyyy-MM-dd")};
     $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:0,Memo:''};
     $scope.init_in = function(){
         
@@ -244,7 +244,7 @@ angular.module("Warehouse-app").controller("StocksOutCtrl",function($scope,httpS
         if (product){
             $scope.detail.Price = product.Price*1;
             $scope.detail.Specification = product.Specification;
-            $scope.detail.Quantity = 1;
+            $scope.detail.Quantity = product.Quantity*1.00;
             $scope.detail.ProductName = product.Name;
         }
         

@@ -99,6 +99,11 @@ class Stocks_model extends MY_Model
         }else{
             if (!$isStockIn){ //if this is stocks out
                 $Quantity = 0 - $Quantity;
+                $maxField = "MaxOutPrice";
+                $minField = "MinOutPrice";
+            }else{
+                $maxField = "MaxPrice";
+                $minField = "MinPrice";
             }
         }
         $inventory = array("StoreId" => $data["StoreId"],

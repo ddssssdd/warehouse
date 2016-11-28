@@ -179,7 +179,7 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
 	$scope.products = [];
     $scope.vendors = [];
     $scope.stores = [];
-    $scope.order = {Id:0,details:[],VendorId:0,StoreId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:''};
+    $scope.order = {Id:0,details:[],VendorId:0,StoreId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:'',EnteredDate:new Date().Format("yyyy-MM-dd")};
     $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:0,Memo:''};
     $scope.init_in = function(){
         var url1 = "<?php echo base_url('product/items')?>";
