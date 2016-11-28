@@ -6,7 +6,7 @@ class Stocks extends Front_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model("StockIn_model","Model");
+        $this->load->model("Stocks_model","Model");
     }
 
     public function in()
@@ -16,9 +16,16 @@ class Stocks extends Front_Controller
 		$this->load->view("stocks/in",$data);
 		$this->load->view("share/footer");
     }
+    public function out()
+    {
+        $data["user"] = $this->user;
+        $this->load->view("share/header");
+        $this->load->view("stocks/out",$data);
+        $this->load->view("share/footer");
+    }
 
     //json items;
-    public function save()
+    public function save_in()
     {
         //$data = $_REQUEST;
         $data = $this->input->post(NULL,TRUE);
@@ -28,25 +35,27 @@ class Stocks extends Front_Controller
         $result = $this->Model->SaveStockIn($data,$this->user["userId"]);
         $this->success_json($result);
     }
+    public function save_out()
+    {
+        //$data = $_REQUEST;
+        $data = $this->input->post(NULL,TRUE);
+        foreach($data["details"] as &$item){
+            
+        }
+        $result = $this->Model->SaveStockOut($data,$this->user["userId"]);
+        $this->success_json($result);
+    }
     public function Items()
     {
         $data = $this->Model->Items();
         return $this->success_json($data);
     }
     
-    public function NewStock()
+    public function products()
     {
-       $data = $this->Model->NewStockIn(
-            $this->input->post_get("InvoiceNo"),
-            $this->input->post_get("VendorId"),
-            $this->input->post_get("TotalPrice"),
-            $this->input->post_get("TotalNo"),
-            $this->user["userId"],
-            $this->input->post_get("Memo"),
-            $this->input->post_get("EnteredDate"),
-            $this->input->post_get("StoreId")
-            );
-        return $this->success_json($data);
+       $store_id = $this->input->post_get("store_id");
+       $data = $this->Model->products($store_id);
+       return $this->success_json($data);
     }
   
 }

@@ -38,10 +38,11 @@
                             <th>#</th>
                             <th>名称</th>
                             <th>规格</th>
-                            <th style="width:50px">单位</th>
-                            <th style="width:50px">长度</th>
-                            <th style="width:50px">宽度</th> 
-                            <th style="width:50px">高度</th>
+                            <th>单位</th>
+                            <th>单价</th>
+                            <th>长度</th>
+                            <th>宽度</th> 
+                            <th>高度</th>
                             <th>品牌</th>
                             <th>条码</th>
                             <th></th>
@@ -53,6 +54,7 @@
                         <td>{{item.Name}}</td>
                         <td>{{item.Specification}}</td>
                         <td>{{item.Unit}}</td>
+                        <td>{{item.Price}}</td>
                         <td>{{item.Length}}</td>
                         <td>{{item.Width}}</td>
                         <td>{{item.Height}}</td>

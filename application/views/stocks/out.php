@@ -1,4 +1,4 @@
-<view ng-controller = "StocksInCtrl">
+<view ng-controller = "StocksOutCtrl">
 
     <!-- left right -->
 <div class="col-sm-12" style="padding:0px;padding-top: 80px; ">
@@ -11,7 +11,7 @@
     <div style="padding: 0px 10px"> 
         <div class="panel panel-default grid">
             <div class="panel-heading">
-                <i class="glyphicon glyphicon-th-list"></i> 入库单
+                <i class="glyphicon glyphicon-th-list"></i> 出库单
                 <div class="panel-tools">
                         <div class="btn-group">
                             <a href="" class="btn  btn-sm "><span class="glyphicon glyphicon-plus"></span> 添加细目</a>            </div>
@@ -21,31 +21,22 @@
                 <div class="panel-filter ">
                     <form class="form-inline" role="form" method="get">
                         <div class="form-group">
-                            <label for="keyword" class="form-control-static control-label">入库单号</label>
-                            <input class="form-control" type="text"  placeholder="入库单号码" ng-model="order.InvoiceNo">
-                            <label for="keyword" class="form-control-static control-label">供应商</label>
-                            <select class="form-control" ng-model="order.VendorId" 
-                                ng-options="item.Id as item.Name for item in vendors">
+                            <label for="keyword" class="form-control-static control-label">出库单号</label>
+                            <input class="form-control" type="text"  placeholder="出库单号码" ng-model="order.InvoiceNo">
+                            <label for="keyword" class="form-control-static control-label">客户</label>
+                            <select class="form-control" ng-model="order.ClientId" 
+                                ng-options="item.Id as item.Name for item in clients">
                             </select>
-                            <label  class="form-control-static control-label">入库日期</label>
+                            <label  class="form-control-static control-label">出库日期</label>
                             <input class="form-control" type="datetime"  placeholder=""  ng-model="order.EnteredDate">
                             <br/>
                             <label for="keyword" class="form-control-static control-label">总价</label>
                             <input class="form-control" type="number"  placeholder="" ng-model="order.TotalPrice">
                             <label for="keyword" class="form-control-static control-label">总数量</label>
-                            <input class="form-control" type="number"  placeholder="" ng-model="order.TotalNo">
-                            <label for="keyword" class="form-control-static control-label">仓库</label>
-                            <select class="form-control" ng-model="order.StoreId" ng-change="order_change_store($event)"
-                                ng-options="item.Id as item.Name for item in stores">
-                                
-                            </select>
+                            <input class="form-control" type="number"  placeholder="" ng-model="order.TotalNo">                            
                             <label for="keyword" class="form-control-static control-label">备注</label>
                             <input class="form-control" type="text"  placeholder=""  ng-model="order.Memo">
-                            
-                            </div>
-
-                           
-                        
+                        </div>
                     </form>
                 </div>
                 <form method="post" id="form_list">
@@ -55,12 +46,13 @@
                         <tr>
                         <th>#</th>
                         <th></th>
+                        <th>仓库</th>
                         <th>产品</th>
                         <th>规格</th>
                         <th>单价</th>
                         <th>数量</th>
                         <th>合计</th>
-                        <th>仓库</th>
+                        
                         <th>备注</th>
                         <th>操作</th>
                         </tr>
@@ -74,7 +66,10 @@
                                     <span class="glyphicon glyphicon-user"></span>
                                 </td>
                                 <td>
-                                    {{find_product(detail.ProductId).Name}}
+                                    {{find_store(detail.StoreId).Name}}
+                                </td>
+                                <td>
+                                    {{detail.ProductName}}
                                 </td>
                                 <td>
                                     {{detail.Specification}}
@@ -88,9 +83,7 @@
                                 <td>
                                     {{detail.Total}}
                                 </td>
-                                <td>
-                                    {{find_store(detail.StoreId).Name}}
-                                </td>
+                                
                                 <td>
                                     {{detail.Memo}}
                                 </td>
@@ -107,6 +100,10 @@
                             </td>
                             <td> </td>
                             <td>
+                                <select ng-model="detail.StoreId" ng-options="s.Id as s.Name for s in stores" ng-change="store_change($event)">
+                                </select>
+                            </td>
+                            <td>
                                 <select ng-model="detail.ProductId" ng-change="detail_change_product($event)" 
                                     ng-options="p.Id as p.Name for p in products">
                                 </select>
@@ -122,16 +119,13 @@
                             </td>
                             <td>
                             </td>
-                            <td>
-                                <select ng-model="detail.StoreId" ng-options="s.Id as s.Name for s in stores">
-                                </select>
-                            </td>
+                            
                             <td>
                                 <input type="text" ng-model="detail.Memo" />
                             </td>
                             <td>
                                 <a href="javascript:void(0)" class="btn btn-default btn-xs" ng-click="add_detail(item,$event)">
-                                    <span class="glyphicon glyphicon-edit"></span> 修改
+                                    <span class="glyphicon glyphicon-edit"></span> 增加细目
                                 </a>                            
                             </td>
                         </tr>
@@ -146,10 +140,10 @@
                                 <span class="glyphicon glyphicon-ok"></span> 反选
                             </button>
                             <button class="btn btn-default"  ng-click="un_select($event)">
-                                <span class="glyphicon glyphicon-lock"></span> 反设置禁止登录
+                                <span class="glyphicon glyphicon-lock"></span> Unknow
                             </button>                        
                             <button class="btn btn-default"  ng-click="save($event)">
-                                <span class="glyphicon glyphicon-save"></span> 保存入库单
+                                <span class="glyphicon glyphicon-save"></span> 保存出库单
                             </button>                    
                         </div>
                     </div>
@@ -175,22 +169,17 @@
 <script>
 
 
-angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpService,Message){
-	$scope.products = [];
-    $scope.vendors = [];
+angular.module("Warehouse-app").controller("StocksOutCtrl",function($scope,httpService,Message){
+	$scope.products = [];    
+    $scope.clients = [];
     $scope.stores = [];
-    $scope.order = {Id:0,details:[],VendorId:0,StoreId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:''};
+    $scope.order = {Id:0,details:[],ClientId:0,TotalPrice:0.0,TotalNo:0,Memo:'',InvoiceNo:''};
     $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:0,Memo:''};
     $scope.init_in = function(){
-        var url1 = "<?php echo base_url('product/items')?>";
-        httpService(url1,{},function(json){
+        
+        httpService(base_url+"/client/items",{},function(json){
             if (json.status){
-                $scope.products = json.result;
-            }
-        });
-        httpService(base_url+"/vendor/items",{},function(json){
-            if (json.status){
-                $scope.vendors = json.result;
+                $scope.clients = json.result;
             }
         });
         httpService(base_url+"/store/items",{},function(json){
@@ -211,7 +200,6 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
     }
     $scope.add_detail = function(event)
     {
-        
         $scope.order.details.push($scope.detail);
         var sum = 0;
         var q = 0;
@@ -223,7 +211,7 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
         }
         $scope.order.TotalPrice = sum;
         $scope.order.TotalNo = q;
-        $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:$scope.order.StoreId,Memo:''};
+        $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:$scope.detail.StoreId,Memo:''};
     }
     $scope.remove_detail = function(index,event){
         if ($scope.order.details){
@@ -232,18 +220,24 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
     }
     $scope.save = function(event){
         console.log($scope.order);
-        var url = base_url + "stocks/save_in";
+        var url = base_url + "stocks/save_out";
         httpService(url,$scope.order,function(json){
             console.log(json);
             if (json.status){
                 $scope.process_order(json.result);
-                Message.show("入库单存储成功！");
+                Message.show("出库单存储成功！");
             }
         });
     }
-    $scope.order_change_store = function(event)
+    $scope.store_change = function(event)
     {
-        $scope.detail.StoreId = $scope.order.StoreId;
+        //should load this store products only;
+        var url = base_url + "stocks/products";
+        httpService(url,{store_id:$scope.detail.StoreId},function(json){
+            if (json.status){               
+                $scope.products = json.result;
+            }
+        });
     }
     $scope.detail_change_product = function(event){
         var product = $scope.find_product($scope.detail.ProductId);
@@ -251,6 +245,7 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
             $scope.detail.Price = product.Price*1;
             $scope.detail.Specification = product.Specification;
             $scope.detail.Quantity = 1;
+            $scope.detail.ProductName = product.Name;
         }
         
     }

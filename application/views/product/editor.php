@@ -41,6 +41,12 @@
 						  <input  type="text" class="form-control" ng-model="product.Unit" placeholder="单位" value="" size="45">
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">单价</label>
+						<div class="col-sm-4">
+						  <input  type="text" class="form-control" ng-model="product.Price" placeholder="单位" value="" size="45">
+						</div>
+					</div>
 					<div class="form-group has-feedback">
 						<label class="col-sm-2 control-label">长度</label>
 						<div class="col-sm-4">
@@ -80,34 +86,38 @@
 					</div>
 				</fieldset>
 
-				<fieldset>
-					<legend>其他信息</legend>
-
-      				<div class="form-group">
-						<label class="col-sm-2 control-label">全名</label>
-						<div class="col-sm-4">
-                  			<input name="fullname" type="text" class="form-control" id="fullname" placeholder="请输入详细内容" value="胡子锅" size="45">
-						</div>
+				<div class="panel pandel-default">
+					<div class="panel-body">
+						<table class="table table-hover dataTable">
+							<thead>
+								<th>仓库</th>
+								<th>库存</th>
+								<th>最小单价</th>
+								<th>最大单价</th>
+								<th>最后更新</th>								
+							</thead>
+							<tbody>
+							<tr ng-repeat="item in product.Inventories">
+								<td>
+									{{item.Name}}
+								</td>
+								<td>
+									{{item.Quantity}}
+								</td>
+								<td>
+									{{item.MinPrice}}
+								</td>
+								<td>
+									{{item.MaxPrice}}
+								</td>
+								<td>
+									{{item.LastUpdate}}
+								</td>
+							</tr>
+							<tbody>
+						</table>
 					</div>
-  	  				<div class="form-group">
-						<label class="col-sm-2 control-label">成员图像</label>
-						<div class="col-sm-9">
-							<img width="100" id="thumb_SRC" border="1" src="/aci/uploadfile/user//aci.jpg"><input type="hidden" id="thumb" name="thumb" value="aci.jpg"> 
-                    		<a #="" class="btn btn-default btn-sm uploadThumb_a">选择图片 ...</a><span class="help-block">只支持图片上传.</span>
-						</div>
-					</div>
-            		<div class="form-group">
-						<label class="col-sm-2 control-label">是否锁定登录</label>
-						<div class="col-sm-4">
-                  			<label class="radio-inline">
-                      			<input type="radio" name="is_lock" id="is_lock1" value="1"> 是
-                    		</label>
-                    		<label class="radio-inline">
-                      			<input type="radio" name="is_lock" id="is_lock2" value="0" checked="checked"> 否
-                    		</label>
-						</div>
-					</div>
-	      		</fieldset>
+				</div>
 				<div class="form-actions">
 					<button type="submit" id="dosubmit" class="btn btn-primary " ng-click="new_product($evnet)">保存</button>
 					

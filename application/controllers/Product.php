@@ -44,10 +44,11 @@ class Product extends Front_Controller
             $data = $this->Model->AddItem($name,
             $this->input->post_get("Specification"),
             $this->input->post_get("Unit"),
+            $this->input->post_get("Price"),
             $this->input->post_get("Width"),
             $this->input->post_get("Height"),
             $this->input->post_get("Length"),
-            $this->input->post_get("Brand"),
+            $this->input->post_get("Brand"),            
             $this->input->post_get("Barcode")
             );
             return $this->success_json($data);
@@ -64,10 +65,11 @@ class Product extends Front_Controller
         $data = $this->Model->EditItem($id,            
              $this->input->post_get("Specification"),
             $this->input->post_get("Unit"),
+            $this->input->post_get("Price"),
             $this->input->post_get("Width"),
             $this->input->post_get("Height"),
             $this->input->post_get("Length"),
-            $this->input->post_get("Brand"),
+            $this->input->post_get("Brand"),            
             $this->input->post_get("Barcode")
         );
         return $this->success_json($data);
