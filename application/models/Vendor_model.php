@@ -54,11 +54,17 @@ class Vendor_model extends MY_Model
 		}
 		return $this->Items();
 	}
-	public function EditVendor($id,$phone,$email,$address,$fax){
-		$vendor = array("Phone" =>$phone, "Email" =>$email, "Address" => $phone, "Fax" => $fax);
+	public function EditVendor($id,$name,$phone,$email,$address,$fax){
+		$vendor = array(
+			"Name" => $name,
+			"Phone" =>$phone, 
+			"Email" =>$email, 
+			"Address" => $phone,
+		 	"Fax" => $fax);
 		$this->db->update("Vendors",$vendor,array("Id"=>$id));
-		$query = $this->db->get_where("Vendors",array("Id"=>$id));
-        return $query->row();
+		//$query = $this->db->get_where("Vendors",array("Id"=>$id));
+        //return $query->row();
+		return $this->Items();
 	}
 	public function RemoveItem($id)
 	{
