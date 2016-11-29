@@ -114,12 +114,11 @@
 
 <script>
 
-
-angular.module("Warehouse-app").controller("ClientCtrl",function($scope,httpService){
+var EMPTY_CLIENT = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
+angular.module("Warehouse-app").controller("ClientCtrl",function($scope,httpService,Message){
 	$scope.clients = [];
-    $scope.current_client = {};
-    $scope.items = [];
-    $scope.client = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
+    $scope.client = EMPTY_CLIENT;
+    $scope.orginal = {};
     var url = "<?php echo base_url('client/items')?>";
     httpService(url,{},function(json){
         if (json.status){
@@ -135,17 +134,24 @@ angular.module("Warehouse-app").controller("ClientCtrl",function($scope,httpServ
                 
                 if (json.status){
                     $scope.clients = json.result;
+                    $scope.client = EMPTY_CLIENT;
+                }else{
+                    Message.show(json.message);
                 }
             });
         }
     }
     $scope.edit_item = function(item,index,event)
     {
-        console.log(item);    
+        item.original_index = index+1;
+        $scope.original = angular.copy(item);
         $scope.client = item;    
     }
     $scope.cancel_edit = function(event){
-        $scope.client = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
+        if ($scope.client.original_index){
+            $scope.clients[$scope.client.original_index-1] = $scope.original;
+        }
+        $scope.client = EMPTY_CLIENT;
     }
     $scope.remove_client = function(client,index,event){
         var url = base_url + "client/remove";

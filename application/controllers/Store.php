@@ -11,7 +11,9 @@ class Store extends Front_Controller
 
     public function index()
     {
+        $store_id = $this->input->post_get("store_id");
         $data["user"] = $this->user;
+        $data["store_id"] = isset($store_id)?$store_id:0;
         $this->load->view("share/header");
 		$this->load->view("store/index",$data);
 		$this->load->view("share/footer");
@@ -50,13 +52,13 @@ class Store extends Front_Controller
     }
     public function Add()
     {
-        $name= $this->input->post_get("name");
+        $name= $this->input->post_get("Name");
         if (!$this->Model->Exists($name)){
             $data = $this->Model->AddItem($name,
-            $this->input->post_get("phone"),
-            $this->input->post_get("manager"),
-            $this->input->post_get("address"),
-            $this->input->post_get("fax"));
+            $this->input->post_get("Phone"),
+            $this->input->post_get("Manager"),
+            $this->input->post_get("Address"),
+            $this->input->post_get("Fax"));
             return $this->success_json($data);
         }else{
             return $this->failure_json($this->Model->Name." name exists");
@@ -64,22 +66,23 @@ class Store extends Front_Controller
     }
      public function Edit()
     {
-        $id = $this->input->post_get("id");
+        $id = $this->input->post_get("Id");
         if (!$id){
             return $this->failure_json("Please input the ".$this->Model->Name." Id");
         }
-        $data = $this->Model->EditItem($id,            
-            $this->input->post_get("phone"),
-            $this->input->post_get("manager"),            
-            $this->input->post_get("address"),
-            $this->input->post_get("fax")
+        $data = $this->Model->EditItem($id, 
+            $this->input->post_get("Name"),           
+            $this->input->post_get("Phone"),
+            $this->input->post_get("Manager"),            
+            $this->input->post_get("Address"),
+            $this->input->post_get("Fax")
         );
         return $this->success_json($data);
 
     }
     public function Remove()
     {
-        $id = $this->input->post_get("id");
+        $id = $this->input->post_get("Id");
         if (!$id){
             return $this->failure_json("Please input the ".$this->Model->Name." Id");
         }

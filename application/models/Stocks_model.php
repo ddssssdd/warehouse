@@ -6,11 +6,21 @@ class Stocks_model extends MY_Model
 		parent::__construct();
 	}
 	
-	public function Items()
+	public function ItemsIn()
 	{
-		$query = $this->db->get("StockIns");
+        $sql = "select m.*,v.Name as VendorName,s.Name as StoreName from StockIns m
+                left join Vendors v on m.VendorId = v.Id
+                left join Stores s on m.StoreId = s.Id order by m.EnteredDate desc";
+		$query = $this->db->query($sql);
 		return $query->result();
 	}
+    public function ItemsOut()
+    {
+        $sql = "select m.*,c.Name as ClientName from StockOuts m
+                left join Clients c on m.ClientId = c.Id  order by m.EnteredDate desc";
+        $query = $this->db->query($sql);
+		return $query->result();
+    }
     public function SaveStockIn($data,$UserId){
         $this->db->trans_begin();
 

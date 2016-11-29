@@ -6,7 +6,7 @@
         <i class="fa fa-user"></i> <?php echo $user["name"] ?> [ Admin ], <a href="<?php echo base_url('home/logout')?>">注销</a>
     </div>
     <ul class='breadcrumb' id='breadcrumb'>
-        vendors
+        
     </ul>
     <div style="padding: 0px 10px"> 
         <h3 class="page-header">
@@ -21,7 +21,7 @@
                 <div class="panel-tools">
                         <div class="btn-group">
                             <a href="" class="btn  btn-sm "><span class="glyphicon glyphicon-plus"></span> 添加细目</a>            </div>
-                            <div class="badge">{{clients.length}}</div>
+                            <div class="badge">{{vendors.length}}</div>
                         </div>
             </div>
             
@@ -97,7 +97,7 @@
                              <a href="javascript:void(0);" class="btn btn-xs btn-info" ng-click="edit_item(item,$index,$event)">
                                 <span class="glyphicon glyphicon-edit"></span> 编辑
                             </a>               
-                            <a href="javascript:void(0);" ng-click="remove_vendor($event,item,$index);" class="btn btn-danger btn-xs">
+                            <a href="javascript:void(0);" ng-click="remove_vendor(item,$index,$event);" class="btn btn-danger btn-xs">
                                 <span class="glyphicon glyphicon-remove"></span> 删除
                             </a>
                         </td>
@@ -116,9 +116,9 @@
 <script>
 
 
-angular.module("Warehouse-app").controller("VendorCtrl",function($scope,httpService){
+angular.module("Warehouse-app").controller("VendorCtrl",function($scope,httpService,Message){
 	$scope.vendors = [];
-    
+    $scope.orginal = {};
     $scope.vendor = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
     var url = "<?php echo base_url('vendor/items')?>";
     httpService(url,{},function(json){
@@ -135,21 +135,28 @@ angular.module("Warehouse-app").controller("VendorCtrl",function($scope,httpServ
                 console.log(json);
                 if (json.status){
                     $scope.vendors = json.result;
+                    $scope.vendor = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
+                }else{
+                     Message.show(json.message);
                 }
             });
         }
     }
     $scope.edit_item = function(item,index,event)
     {
-        console.log(item);    
+        item.original_index = index+1;
+        $scope.original = angular.copy(item);    
         $scope.vendor = item;    
     }
     $scope.cancel_edit = function(event){
+        if ($scope.vendor.original_index){
+            $scope.vendors[$scope.vendor.original_index-1] = $scope.original;
+        }
         $scope.vendor = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
     }
-    $scope.remove_vendor = function(event,vendor,index){
+    $scope.remove_vendor = function(vendor,index,event){
         var url = base_url + "/vendor/remove";
-        httpService(url,{id:vendor.Id},function(json){
+        httpService(url,{Id:vendor.Id},function(json){
             if (json.status){
                 $scope.vendors.splice(index,1);
             }

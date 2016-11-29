@@ -20,16 +20,16 @@
         <i class="fa fa-user"></i> <?php echo $user["name"] ?> [ Admin ], <a href="<?php echo base_url('home/logout')?>">注销</a>
     </div>
     <ul class='breadcrumb' id='breadcrumb'>
-        库房
+        库房- {{current_store.Name}}
     </ul>
     <div style="padding: 0px 10px">                       
         <div class="panel panel-default grid">
              <div class="panel-heading">
-                <i class="glyphicon glyphicon-th-list"></i> 产品列表
+                <i class="glyphicon glyphicon-th-list"></i> {{current_store.Name}} - 库存清单
                 <div class="panel-tools">
 
                     <div class="btn-group">
-                        <a href="javascript:void(0)" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-refresh"></span> 刷新</a>
+                        <a href="<?php echo base_url('store/manage');?>" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-edit"></span> 管理</a>
 
                         
                     </div>
@@ -77,26 +77,125 @@
             </div>
 
         </div> 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-th-list"></i> 入库清单
+                <div class="panel-tools">
+
+                    <div class="btn-group">
+                        <a href="<?php echo base_url('stocks/in');?>" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-edit"></span> 新建入库单</a>
+
+                        
+                    </div>
+                    <div class="badge">{{stockIns.length}}</div>
+                </div>
+            </div>
+            <div class="panel-body grid">
+                <table class="table table-hover">
+                    <thead>
+                        <th>日期</th>
+                        <th>供应商</th>
+                        <th>发票号码</th>
+                        <th>总价</th>
+                        <th>总数量</th>
+                        <th>备注</th>
+                        <th>仓库</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat = "item in stockIns">
+                            <td>{{item.EnteredDate}}</td>
+                            <td>{{item.VendorName}}</td>
+                            <td>{{item.InvoiceNo}}</td>
+                            <td>{{item.TotalPrice | currency:'¥'}}</td>
+                            <td>{{item.TotalNo}}</td>
+                            <td>{{item.Memo}}</td>
+                            <td>{{item.StoreName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-th-list"></i> 出库清单
+                <div class="panel-tools">
+
+                    <div class="btn-group">
+                        <a href="<?php echo base_url('stocks/out');?>" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-edit"></span> 新建出库单</a>
+
+                        
+                    </div>
+                    <div class="badge">{{stockOuts.length}}</div>
+                </div>
+            </div>
+            <div class="panel-body grid">
+                <table class="table table-hover">
+                    <thead>
+                        <th>日期</th>
+                        <th>客户</th>
+                        <th>发票号码</th>
+                        <th>总价</th>
+                        <th>总数量</th>
+                        <th>备注</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat = "item in stockOuts">
+                            <td>{{item.EnteredDate}}</td>
+                            <td>{{item.ClientName}}</td>
+                            <td>{{item.InvoiceNo}}</td>
+                            <td>{{item.TotalPrice | currency:'¥'}}</td>
+                            <td>{{item.TotalNo}}</td>
+                            <td>{{item.Memo}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 </view>
 
 <script>
-
+var STORE_ID = <?php echo $store_id ?>;
 
 angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpService){
 	$scope.stores = [];
     $scope.current_store = {};
     $scope.products = [];
-    var url = "<?php echo base_url('store/items')?>";
-    httpService(url,{},function(json){
-        if (json.status){
-            $scope.stores = json.result;
-            if ($scope.stores.length>0){
-                $scope.select_store($scope.stores[0]);
+    $scope.stockIns = [];
+    $scope.stockOuts = [];
+    $scope.init_data = function()
+    {
+        var url = "<?php echo base_url('store/items')?>";
+        httpService(url,{},function(json){
+            if (json.status){
+                $scope.stores = json.result;
+                if ($scope.stores.length>0){
+                    var index = 0;
+                    for(var i=0;i<$scope.stores.length;i++){
+                        if (STORE_ID==$scope.stores[i].Id){
+                            index = i;
+                            break;
+                        }
+                    }
+                    $scope.select_store($scope.stores[index]);
+                }
             }
-        }
-    });
+        });
+        //load ins
+        httpService(base_url + "stocks/ItemsIn",{},function(json){
+            if (json.status){
+                $scope.stockIns = json.result;
+            }
+        });
+        //load outs; 
+        httpService(base_url + "stocks/ItemsOut",{},function(json){
+            if (json.status){
+                $scope.stockOuts = json.result;
+            }
+        });   
+    }
+    
     $scope.select_store =function(item){
         $scope.current_store = item;
         $scope.load_inventory();
@@ -116,6 +215,6 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
     {
         return p.Unit+'-('+p.Length+','+p.Width+','+p.Height+')-'+p.Brand;
     }
-
+    $scope.init_data();
 });
 </script>

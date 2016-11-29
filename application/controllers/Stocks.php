@@ -45,9 +45,14 @@ class Stocks extends Front_Controller
         $result = $this->Model->SaveStockOut($data,$this->user["userId"]);
         $this->success_json($result);
     }
-    public function Items()
+    public function ItemsIn()
     {
-        $data = $this->Model->Items();
+        $data = $this->Model->ItemsIn();
+        return $this->success_json($data);
+    }
+    public function ItemsOut()
+    {
+        $data = $this->Model->ItemsOut();
         return $this->success_json($data);
     }
     

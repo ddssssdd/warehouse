@@ -15,12 +15,12 @@
                 <div class="panel-tools">
                         <div class="btn-group">
                             <a href="" class="btn  btn-sm "><span class="glyphicon glyphicon-plus"></span> 添加细目</a>            </div>
-                            <div class="badge">2</div>
+                            <div class="badge">{{order.details.length}}</div>
                         </div>
                 </div>
                 <div class="panel-filter ">
-                    <form class="form-inline" role="form" method="get">
-                        <div class="form-group">
+                    
+                        <div class="form-group form-inline">
                             <label for="keyword" class="form-control-static control-label">出库单号</label>
                             <input class="form-control" type="text"  placeholder="出库单号码" ng-model="order.InvoiceNo">
                             <label for="keyword" class="form-control-static control-label">客户</label>
@@ -29,17 +29,11 @@
                             </select>
                             <label  class="form-control-static control-label">出库日期</label>
                             <input class="form-control" type="datetime"  placeholder=""  ng-model="order.EnteredDate">
-                            <br/>
-                            <label for="keyword" class="form-control-static control-label">总价</label>
-                            <input class="form-control" type="number"  placeholder="" ng-model="order.TotalPrice">
-                            <label for="keyword" class="form-control-static control-label">总数量</label>
-                            <input class="form-control" type="number"  placeholder="" ng-model="order.TotalNo">                            
-                            <label for="keyword" class="form-control-static control-label">备注</label>
-                            <input class="form-control" type="text"  placeholder=""  ng-model="order.Memo">
+                           
                         </div>
-                    </form>
+                    
                 </div>
-                <form method="post" id="form_list">
+                
                     <div class="panel-body ">
                         <table class="table table-hover dataTable">
                         <thead>
@@ -75,7 +69,7 @@
                                     {{detail.Specification}}
                                 </td>
                                 <td>
-                                    {{detail.Price}}
+                                    {{detail.Price | currency:'¥'}}
                                 </td>
                                 <td>
                                     {{detail.Quantity}}
@@ -89,7 +83,7 @@
                                 </td>
                                 
                                 <td>
-                                    <a href="javascript:void(0)" class="btn btn-default btn-xs" ng-click="remove_detail($index,$event)">
+                                    <a href="javascript:void(0)" class="btn btn-danger" ng-click="remove_detail($index,$event)">
                                     <span class="glyphicon glyphicon-remove"></span> 删除
                                 </a>  
                                 </td>
@@ -100,32 +94,32 @@
                             </td>
                             <td> </td>
                             <td>
-                                <select ng-model="detail.StoreId" ng-options="s.Id as s.Name for s in stores" ng-change="store_change($event)">
+                                <select class="form-control" ng-model="detail.StoreId" ng-options="s.Id as s.Name for s in stores" ng-change="store_change($event)">
                                 </select>
                             </td>
                             <td>
-                                <select ng-model="detail.ProductId" ng-change="detail_change_product($event)" 
+                                <select class="form-control" ng-model="detail.ProductId" ng-change="detail_change_product($event)" 
                                     ng-options="p.Id as p.Name for p in products">
                                 </select>
                             </td>
                             <td>
-                                <input type="text" ng-model="detail.Specification" />
+                                <input class="form-control" type="text" ng-model="detail.Specification" />
                             </td>
                             <td>
-                                <input type="number" ng-model="detail.Price" />
+                                <input type="number" ng-model="detail.Price" class="form-control"/>
                             </td>
                             <td>
-                                <input type="number" ng-model="detail.Quantity" />
+                                <input type="number" ng-model="detail.Quantity" class="form-control"/>
                             </td>
                             <td>
                             </td>
                             
                             <td>
-                                <input type="text" ng-model="detail.Memo" />
+                                <input type="text" ng-model="detail.Memo" class="form-control"/>
                             </td>
                             <td>
-                                <a href="javascript:void(0)" class="btn btn-default btn-xs" ng-click="add_detail(item,$event)">
-                                    <span class="glyphicon glyphicon-edit"></span> 增加细目
+                                <a href="javascript:void(0)" class="btn btn-primary" ng-click="add_detail(item,$event)">
+                                    <span class="glyphicon glyphicon-edit"></span> 增加
                                 </a>                            
                             </td>
                         </tr>
@@ -134,27 +128,36 @@
 
                 </div>
                 <div class="panel-footer">
-                    <div class="pull-left">
+                    <div class="pull-left form-group form-inline">
+                         
+                                            
+                        <label for="keyword" class="form-control-static control-label">总价</label>
+                        <input class="form-control" type="number"  placeholder="" ng-model="order.TotalPrice">
+                        
+                        <label for="keyword" class="form-control-static control-label">总数量</label>
+                        <input class="form-control" type="number"  placeholder="" ng-model="order.TotalNo">
+                        
+                        <label for="keyword" class="form-control-static control-label">备注</label>
+                        <input class="form-control" type="text"  placeholder=""  ng-model="order.Memo">
+                          
+                    </div>
+                    <div class="pull-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default" ng-click="un_select($event)">
                                 <span class="glyphicon glyphicon-ok"></span> 反选
                             </button>
-                            <button class="btn btn-default"  ng-click="un_select($event)">
-                                <span class="glyphicon glyphicon-lock"></span> Unknow
-                            </button>                        
+                          
                             <button class="btn btn-default"  ng-click="save($event)">
                                 <span class="glyphicon glyphicon-save"></span> 保存出库单
                             </button>                    
                         </div>
-                    </div>
-                    <div class="pull-right">
                     </div>
                 <div>
                 
             </div>
         </div>
 
-    </form>
+    
 </div>
         
         <div class="alert alert-success alert-dismissible" role="alert">

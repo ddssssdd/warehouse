@@ -28,7 +28,7 @@
 
                         <a href="<?php echo base_url('product/editor?id=0') ?>" target="_blank" class="btn  btn-sm "><span class="glyphicon glyphicon-plus"></span> 添加</a>            
                     </div>
-                    <div class="badge">2</div>
+                    <div class="badge">{{products.length}}</div>
                 </div>
             </div>
             <div class="panel-body">

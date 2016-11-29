@@ -35,15 +35,15 @@ class Store_model extends MY_Model
 		$this->db->insert($this->tableName,$item);
 		return $this->Items();
 	}
-	public function EditItem($id,$phone,$manager,$address,$fax){
+	public function EditItem($id,$name,$phone,$manager,$address,$fax){
 		$item = array(
+			"Name" => $name,
 			"Phone" =>$phone, 
 			"Manager" =>$manager, 
 			"Address" => $phone, 
 			"Fax" => $fax);
 		$this->db->update($this->tableName,$item,array("Id"=>$id));
-		$query = $this->db->get_where($this->tableName,array("Id"=>$id));
-        return $query->row();
+		return $this->Items();
 	}
 	public function RemoveItem($id)
 	{
