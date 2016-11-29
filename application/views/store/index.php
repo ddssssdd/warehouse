@@ -2,7 +2,7 @@
 <div class="col-sm-3 col-md-2 sidebar">
     <aside>
         <div class="list-group">
-            <a href="#" class="list-group-item disabled">Stores</a>
+            <a href="#" class="list-group-item disabled">库房</a>
             
             <a href="javascript:void(0)"
                  class="list-group-item {{current_store.Id==item.Id?'current-active':''}}"
@@ -20,7 +20,7 @@
         <i class="fa fa-user"></i> <?php echo $user["name"] ?> [ Admin ], <a href="<?php echo base_url('home/logout')?>">注销</a>
     </div>
     <ul class='breadcrumb' id='breadcrumb'>
-        Stores
+        库房
     </ul>
     <div style="padding: 0px 10px">                       
         <div class="panel panel-default grid">
@@ -58,11 +58,11 @@
                         <td>{{item.Id}}</td>
                         <td>{{item.Name}}</td>
                         <td>{{item.Specification}}</td>
-                        <td>{{item.MinPrice}}</td>
-                        <td>{{item.MaxPrice}}</td>
-                        <td>{{item.MinOutPrice}}</td>
-                        <td>{{item.MaxOutPrice}}</td>
-                        <td>{{item.Quantity}}</td>
+                        <td>{{item.MinPrice | currency:'￥'}}</td>
+                        <td>{{item.MaxPrice | currency:'￥'}}</td>
+                        <td>{{item.MinOutPrice | currency:'￥'}}</td>
+                        <td>{{item.MaxOutPrice | currency:'￥'}}</td>
+                        <td>{{item.Quantity}}({{item.Unit}})</td>
                         <td>{{product_description(item)}}</td>
                         <td>{{item.Barcode}}</td>
                         <td>
@@ -92,6 +92,9 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
     httpService(url,{},function(json){
         if (json.status){
             $scope.stores = json.result;
+            if ($scope.stores.length>0){
+                $scope.select_store($scope.stores[0]);
+            }
         }
     });
     $scope.select_store =function(item){

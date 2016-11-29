@@ -75,9 +75,17 @@
                             <a href="<?php echo base_url("stocks/out") ?>"> <i class="fa fa-street-view"></i><span>出库</span></a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url("home/index") ?>"> <i class="fa fa-book"></i><span>系统管理</span></a>
+                            <a href="<?php echo base_url("product/index") ?>"> <i class="fa fa-book"></i><span>产品</span></a>
                         </li>
-                        
+                        <li>
+                            <a href="<?php echo base_url("client/index") ?>"> <i class="fa fa-suitcase"></i><span>客户</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url("vendor/index") ?>"> <i class="fa fa-gear"></i><span>供应商</span></a>
+                        </li>
+                        <li>
+                            <a href ="http://fontawesome.dashgame.com/" target="_blank"><i class="fa fa-flag"></i><span>图标选择</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>

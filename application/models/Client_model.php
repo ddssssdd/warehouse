@@ -54,19 +54,21 @@ class Client_model extends MY_Model
 		}
 		return $this->Items();
 	}
-	public function EditClient($id,$phone,$email,$address,$fax){
+	public function EditClient($id,$name,$phone,$email,$address,$fax){
 		$client = array(
+			"Name" =>$name, 
 			"Phone" =>$phone, 
 			"Email" =>$email, 
 			"Address" => $phone, 
 			"Fax" => $fax);
 		$this->db->update("Clients",$client,array("Id"=>$id));
-		$query = $this->db->get_where("Clients",array("Id"=>$id));
-        return $query->row();
+		//$query = $this->db->get_where("Clients",array("Id"=>$id));
+        //return $query->row();
+        return $this->Items();
 	}
 	public function RemoveItem($id)
 	{
-		$this->db->query("delete from ClientContacts where VendorId=".$id);
+		$this->db->query("delete from ClientContacts where ClientId=".$id);
 		$this->db->query("delete from Clients where Id=".$id);
 		return;
 	}

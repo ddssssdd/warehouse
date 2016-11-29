@@ -53,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in details | filter:search_item " style="{{item.Method=='In'?'':'background-color: #1ABC9C;'}}">
+                        <tr ng-repeat="item in details | filter:search_item " class="{{item.Method=='In'?'':'danger'}}">
                         <td>{{item.UpdateSequ}}</td>
                         <td>{{item.ProductId}}</td>
                         <td>{{item.StoreId}}</td>
