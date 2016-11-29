@@ -23,6 +23,16 @@ class Store extends Front_Controller
 		$this->load->view("store/manage",$data);
 		$this->load->view("share/footer");
     }
+    public function detail()
+    {
+        $data["user"] = $this->user;
+        $data["inventory_id"] = $this->input->post_get("inventory_id");   
+        $data["product_id"] = $this->input->post_get("product_id");  
+        $data["store_id"] = $this->input->post_get("store_id");        
+        $this->load->view("share/header");
+        $this->load->view("store/detail",$data);
+        $this->load->view("share/footer");
+    }
     
     public function Items()
     {

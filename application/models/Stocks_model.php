@@ -178,11 +178,21 @@ class Stocks_model extends MY_Model
 
 	public function products($store_id)
 	{
-		$sql = "SELECT i.ProductId,i.MinPrice,i.MaxPrice,i.MinOutPrice,i.MaxOutPrice,i.Quantity, p.* FROM Inventories i
+		$sql = "SELECT i.Id AS InventoryId,i.ProductId,i.MinPrice,i.MaxPrice,i.MinOutPrice,i.MaxOutPrice,i.Quantity, p.* FROM Inventories i
                 LEFT JOIN Products p ON i.ProductId = p.Id
                 WHERE i.StoreId=?";
 		$query = $this->db->query($sql,array($store_id));
 		return $query->result();
 	}
+
+    public function details($inventory_id,$store_id,$product_id)
+    {
+        $sql = "SELECT StockInId AS Id,ProductId,StoreId,Specification,Quantity,Price,Memo,UpdateSequ,BeforeUpdate,AfterUpdate,'In' AS Method,UpdateDate FROM StockInDetails WHERE InventoryId=?
+                UNION 
+                SELECT StockOutId AS Id,ProductId,StoreId,'' AS Specification,Quantity,Price,Memo,UpdateSequ,BeforeUpdate,AfterUpdate,'Out' AS Method,UpdateDate FROM StockOutDetails WHERE InventoryId=?
+                ORDER BY UpdateSequ";
+        $query = $this->db->query($sql,array($inventory_id,$inventory_id));
+        return $query->result();   
+    }
 
 }

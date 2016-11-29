@@ -66,16 +66,16 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right navbar-icon-menu">
                         <li>
-                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-home"></i><span>首页</span></a>
+                            <a href="<?php echo base_url("store/index") ?>"> <i class="fa fa-home"></i><span>首页</span></a>
                         </li>
                         <li>
-                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-list-ol"></i><span>Warehouse</span></a>
+                            <a href="<?php echo base_url("stocks/in") ?>"> <i class="fa fa-list-ol"></i><span>入库</span></a>
                         </li>
                         <li>
-                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-street-view"></i><span>Menu</span></a>
+                            <a href="<?php echo base_url("stocks/out") ?>"> <i class="fa fa-street-view"></i><span>出库</span></a>
                         </li>
                         <li>
-                            <a href="<?php base_url("home/index") ?>"> <i class="fa fa-book"></i><span>Menu</span></a>
+                            <a href="<?php echo base_url("home/index") ?>"> <i class="fa fa-book"></i><span>系统管理</span></a>
                         </li>
                         
                     </ul>
