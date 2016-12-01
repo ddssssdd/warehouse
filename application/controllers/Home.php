@@ -56,7 +56,7 @@ class Home extends Front_Controller
 	public function java()
 	{
 		$t = $this->input->get_post("tablename");
-		$sql ="SELECT CASE DATA_TYPE WHEN 'int' THEN 'int' WHEN 'varchar' THEN 'String' ELSE DATA_TYPE END AS TYPE_NAME ,COLUMN_NAME 
+		$sql ="SELECT CASE DATA_TYPE WHEN 'int' THEN 'int' WHEN 'varchar' THEN 'String' WHEN 'decimal' THEN 'Double' ELSE DATA_TYPE END AS TYPE_NAME ,COLUMN_NAME 
 			FROM information_schema.COLUMNS WHERE table_name = ? AND table_schema = 'warehouse'";
 		$this->load->database();
 		$query = $this->db->query($sql,array($t));
