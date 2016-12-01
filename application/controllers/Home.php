@@ -53,4 +53,28 @@ class Home extends Front_Controller
 		$this->load->view("home/standard");
 		$this->load->view("share/footer");
 	}
+	public function java()
+	{
+		$t = $this->input->get_post("tablename");
+		$sql ="SELECT CASE DATA_TYPE WHEN 'int' THEN 'int' WHEN 'varchar' THEN 'String' ELSE DATA_TYPE END AS TYPE_NAME ,COLUMN_NAME 
+			FROM information_schema.COLUMNS WHERE table_name = ? AND table_schema = 'warehouse'";
+		$this->load->database();
+		$query = $this->db->query($sql,array($t));
+		$result = "public class ".$t." extends Entity{";
+		$result = $result."public ".$t."(){ }";
+		$getset ="";
+		foreach($query->result() as $item){
+			$type = $item->TYPE_NAME;
+			$name = $item ->COLUMN_NAME;
+			$result =$result." public ".$item->TYPE_NAME." ".$item->COLUMN_NAME.";  ";
+			$get = "public ".$type." get".$name."(){ return ".$name.";} ";
+			$set = "public void set".$name."(".$type." value){ ".$name." = value; } ";
+			$getset = $getset.$get.$set;
+			//$result=$item->TYPE_NAME;
+		}
+		$getset="";//for now, don't need get set.
+		$result= $result.$getset."}";
+		
+		$this->json($result);
+	}
 }
