@@ -14,6 +14,13 @@ class Client_model extends MY_Model
 		return $query->result();
 
 	}
+	public function Find($id)
+	{
+		$query = $this->db->query("select v.*,c.Name as ContactName,c.Cellphone as ContactCellphone from Clients v
+									left join Contacts c on c.Id = v.ContactId where v.Id=?",array($id));
+		return $query->row();		
+		
+	}
 
 	public function Exists($name){
 		$this->db->where("Name",$name);
@@ -72,5 +79,6 @@ class Client_model extends MY_Model
 		$this->db->query("delete from Clients where Id=".$id);
 		return;
 	}
+
 
 }

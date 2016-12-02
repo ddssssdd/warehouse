@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">单价</label>
 						<div class="col-sm-4">
-						  <input  type="text" class="form-control" ng-model="product.Price" placeholder="单位" value="" size="45">
+						  <input  type="text" class="form-control" ng-model="product.Price" placeholder="单价" value="" size="45">
 						</div>
 					</div>
 					<div class="form-group has-feedback">
@@ -62,19 +62,19 @@
 					<div class="form-group has-feedback">
 						<label class="col-sm-2 control-label">高度</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" ng-model="product.Height" placeholder="宽度" size="45" data-bv-field="mobile">
+							<input type="text" class="form-control" ng-model="product.Height" placeholder="高度" size="45" data-bv-field="mobile">
 						</div>
 					</div>
 					<div class="form-group has-feedback">
 						<label class="col-sm-2 control-label">品牌</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" ng-model="product.Brand" placeholder="宽度" size="45" data-bv-field="mobile">
+							<input type="text" class="form-control" ng-model="product.Brand" placeholder="品牌" size="45" data-bv-field="mobile">
 						</div>
 					</div>
 					<div class="form-group has-feedback">
 						<label class="col-sm-2 control-label">条形码</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" ng-model="product.Barcode" placeholder="宽度" size="45" data-bv-field="mobile">
+							<input type="text" class="form-control" ng-model="product.Barcode" placeholder="条形码" size="45" data-bv-field="mobile">
 						</div>
 					</div>
 					<div class="form-group has-feedback">
@@ -140,6 +140,7 @@ angular.module("Warehouse-app").controller("ProductEditCtrl",function($scope,htt
 	httpService(url,{id:id},function(json){
     	if (json.status){
         	$scope.product = json.result;
+        	$scope.product.Price =$scope.product.Price *1.00;
         }
 	});
        

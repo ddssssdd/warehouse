@@ -53,8 +53,9 @@ class Product_model extends MY_Model
 		$this->db->insert($this->tableName,$item);
 		return $this->Items();
 	}
-	public function EditItem($id,$specification,$unit,$price,$width,$height,$length,$brand,$barcode){
+	public function EditItem($id,$name,$specification,$unit,$price,$width,$height,$length,$brand,$barcode){
 		$item = array(
+			"Name" => $name,
 			"specification" => $specification,
 			"Unit" => $unit,
 			"Width" => $width,

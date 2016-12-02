@@ -62,8 +62,9 @@ class Product extends Front_Controller
         if (!$id){
             return $this->failure_json("Please input the ".$this->Model->Name." Id");
         }
-        $data = $this->Model->EditItem($id,            
-             $this->input->post_get("Specification"),
+        $data = $this->Model->EditItem($id,       
+            $this->input->post_get("Name"),     
+            $this->input->post_get("Specification"),
             $this->input->post_get("Unit"),
             $this->input->post_get("Price"),
             $this->input->post_get("Width"),
@@ -84,6 +85,5 @@ class Product extends Front_Controller
             $data =  $this->Model->Find($id);
             return $this->success_json($data);
         }
-        
     }
 }

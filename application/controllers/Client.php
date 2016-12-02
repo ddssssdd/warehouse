@@ -71,4 +71,14 @@ class Client extends Front_Controller
         $this->Model->RemoveItem($id);
         $this->success_json($id);
     }
+    public function Find()
+    {
+        $id = $this->input->post_get("id");
+        if (!$id){
+            return $this->success_json(array("Id"=>0,"Name"=>"trythis"));
+        }else{
+            $data =  $this->Model->Find($id);
+            return $this->success_json($data);
+        }
+    }
 }

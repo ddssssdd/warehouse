@@ -14,7 +14,13 @@ class Vendor_model extends MY_Model
 		return $query->result();
 
 	}
-
+	public function Find($id)
+	{
+		$query = $this->db->query("select v.*,c.Name as ContactName,c.Cellphone as ContactCellphone from Vendors v
+									left join Contacts c on c.Id = v.ContactId where v.Id=?",array($id));
+		return $query->row();		
+		
+	}
 	public function Exists($name){
 		$this->db->where("Name",$name);
 		$query = $this->db->get("Vendors");
@@ -59,7 +65,7 @@ class Vendor_model extends MY_Model
 			"Name" => $name,
 			"Phone" =>$phone, 
 			"Email" =>$email, 
-			"Address" => $phone,
+			"Address" => $address,
 		 	"Fax" => $fax);
 		$this->db->update("Vendors",$vendor,array("Id"=>$id));
 		//$query = $this->db->get_where("Vendors",array("Id"=>$id));
