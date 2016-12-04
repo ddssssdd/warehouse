@@ -41,7 +41,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>产品</th>
+                            <th>供应商／客户</th>
+                            <th>商品</th>    
                             <th>库房</th>                            
                             <th>价格</th>                            
                             <th>方式</th>
@@ -55,8 +56,9 @@
                     <tbody>
                         <tr ng-repeat="item in details | filter:search_item " class="{{item.Method=='In'?'':'danger'}}">
                         <td>{{item.UpdateSequ}}</td>
-                        <td>{{item.ProductId}}</td>
-                        <td>{{item.StoreId}}</td>
+                        <td>{{item.Name}}</td>
+                        <td>{{item.ProductName}}</td>
+                        <td>{{item.StoreName}}</td>
                         <td>{{item.Price | currency:"￥"}}</td>                        
                         <td>{{item.Method=='In'?'入库':'出库'}}</td>
                         <td>{{item.BeforeUpdate}}</td>

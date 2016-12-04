@@ -85,20 +85,20 @@ class Stocks_model extends MY_Model
             $Old = $row->Quantity;
             if ($isStockIn){
                 $Quantity = $Quantity + $Old;                
-                if ($MaxPrice>$row->MaxPrice){
+                if ($MaxPrice<$row->MaxPrice){
                    $MaxPrice = $row->MaxPrice;
                 }
-                if ($MinPrice <$row->MinPrice){
+                if ($MinPrice >$row->MinPrice){
                     $MinPrice = $row->MinPrice;
                 }
                 $maxField = "MaxPrice";
                 $minField = "MinPrice";
             }else{
                 $Quantity = $Old - $Quantity;
-                if ($MaxPrice>$row->MaxOutPrice){
+                if ($row->MaxOutPrice &&  $MaxPrice<$row->MaxOutPrice){
                    $MaxPrice = $row->MaxOutPrice;
                 }
-                if ($MinPrice <$row->MinOutPrice){
+                if ($row->MinOutPrice &&  $MinPrice > $row->MinOutPrice){
                     $MinPrice = $row->MinOutPrice;
                 }
                 $maxField = "MaxOutPrice";
@@ -197,10 +197,23 @@ class Stocks_model extends MY_Model
 
     public function details($inventory_id,$store_id,$product_id)
     {
-        $sql = "SELECT StockInId AS Id,ProductId,StoreId,Specification,Quantity,Price,Memo,UpdateSequ,BeforeUpdate,AfterUpdate,'In' AS Method,UpdateDate FROM StockInDetails WHERE InventoryId=?
-                UNION 
-                SELECT StockOutId AS Id,ProductId,StoreId,'' AS Specification,Quantity,Price,Memo,UpdateSequ,BeforeUpdate,AfterUpdate,'Out' AS Method,UpdateDate FROM StockOutDetails WHERE InventoryId=?
-                ORDER BY UpdateSequ";
+        $sql = "SELECT d.StockInId AS Id,d.ProductId,d.StoreId,d.Specification,d.Quantity,d.Price,d.Memo,d.UpdateSequ,d.BeforeUpdate,d.AfterUpdate,'In' AS Method,d.UpdateDate,v.Name, p.Name as ProductName, s.Name as StoreName
+FROM StockInDetails d
+left join StockIns i on d.StockInId = i.Id
+left join Vendors v on i.VendorId = v.Id
+left join Products p on d.ProductId = p.Id
+left join Stores s on d.StoreId = s.Id
+WHERE InventoryId=?
+UNION 
+SELECT d.StockOutId AS Id,d.ProductId,d.StoreId,'' AS Specification,d.Quantity,d.Price,d.Memo,d.UpdateSequ,d.BeforeUpdate,d.AfterUpdate,'Out' AS Method,d.UpdateDate,
+c.Name, p.Name as ProductName, s.Name as StoreName
+FROM StockOutDetails d
+left join StockOuts o on d.StockOutId = o.Id
+left join Clients c on o.ClientId = c.Id
+left join Products p on d.ProductId = p.Id
+left join Stores s on d.StoreId = s.Id
+WHERE InventoryId=?
+ORDER BY UpdateSequ";
         $query = $this->db->query($sql,array($inventory_id,$inventory_id));
         return $query->result();   
     }

@@ -11,6 +11,17 @@
                  {{item.Name}}<i class="fa fa-chevron-right"></i>
             </a>
   
+        </div> 
+        <div class="list-group">
+            <a href="#" class="list-group-item disabled">查看</a>
+            
+            <a href="<?php echo base_url('inventory/stocksin') ?>" class="list-group-item">
+                 入库单<i class="fa fa-chevron-right"></i>
+            </a>
+            <a href="<?php echo base_url('inventory/stocksout') ?>" class="list-group-item">
+                 出库单<i class="fa fa-chevron-right"></i>
+            </a>
+  
         </div>          
     </aside>
 </div>
@@ -77,80 +88,8 @@
             </div>
 
         </div> 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="glyphicon glyphicon-th-list"></i> 入库清单
-                <div class="panel-tools">
-
-                    <div class="btn-group">
-                        <a href="<?php echo base_url('stocks/in');?>" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-edit"></span> 新建入库单</a>
-
-                        
-                    </div>
-                    <div class="badge">{{stockIns.length}}</div>
-                </div>
-            </div>
-            <div class="panel-body grid">
-                <table class="table table-hover">
-                    <thead>
-                        <th>日期</th>
-                        <th>供应商</th>
-                        <th>发票号码</th>
-                        <th>总价</th>
-                        <th>总数量</th>
-                        <th>备注</th>
-                        <th>仓库</th>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat = "item in stockIns">
-                            <td>{{item.EnteredDate}}</td>
-                            <td>{{item.VendorName}}</td>
-                            <td>{{item.InvoiceNo}}</td>
-                            <td>{{item.TotalPrice | currency:'¥'}}</td>
-                            <td>{{item.TotalNo}}</td>
-                            <td>{{item.Memo}}</td>
-                            <td>{{item.StoreName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-         <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="glyphicon glyphicon-th-list"></i> 出库清单
-                <div class="panel-tools">
-
-                    <div class="btn-group">
-                        <a href="<?php echo base_url('stocks/out');?>" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-edit"></span> 新建出库单</a>
-
-                        
-                    </div>
-                    <div class="badge">{{stockOuts.length}}</div>
-                </div>
-            </div>
-            <div class="panel-body grid">
-                <table class="table table-hover">
-                    <thead>
-                        <th>日期</th>
-                        <th>客户</th>
-                        <th>发票号码</th>
-                        <th>总价</th>
-                        <th>总数量</th>
-                        <th>备注</th>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat = "item in stockOuts">
-                            <td>{{item.EnteredDate}}</td>
-                            <td>{{item.ClientName}}</td>
-                            <td>{{item.InvoiceNo}}</td>
-                            <td>{{item.TotalPrice | currency:'¥'}}</td>
-                            <td>{{item.TotalNo}}</td>
-                            <td>{{item.Memo}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        
+         
     </div>
 </div>
 </view>
@@ -182,18 +121,7 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
                 }
             }
         });
-        //load ins
-        httpService(base_url + "stocks/ItemsIn",{},function(json){
-            if (json.status){
-                $scope.stockIns = json.result;
-            }
-        });
-        //load outs; 
-        httpService(base_url + "stocks/ItemsOut",{},function(json){
-            if (json.status){
-                $scope.stockOuts = json.result;
-            }
-        });   
+        
     }
     
     $scope.select_store =function(item){

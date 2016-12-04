@@ -14,18 +14,21 @@ class Inventory extends Front_Controller
         return $this->success_json($data);    
     }
     
-    public function Add()
+    public function stocksin()
     {
-        $data = $this->Model->AddItem(
-            $this->input->post_get("storeId"),
-            $this->input->post_get("productId"),
-            $this->input->post_get("vendorId"),
-            $this->input->post_get("quantity"),
-            $this->input->post_get("inprice"),
-            $this->input->post_get("indate"),
-            $this->input->post_get("userId")
-            );
-        return $this->success_json($data);
+        $data["user"] = $this->user;
+        
+        $this->load->view("share/header");
+        $this->load->view("inventory/in",$data);
+        $this->load->view("share/footer");
+    }
+    public function stocksout()
+    {
+        $data["user"] = $this->user;
+        
+        $this->load->view("share/header");
+        $this->load->view("inventory/out",$data);
+        $this->load->view("share/footer");
     }
   
 }
