@@ -12,12 +12,31 @@
     <!-- left right -->
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2" style="padding:0px;padding-top: 80px; ">
     <div class="text-right pull-right" style="padding-right: 10px;"> 
-        <i class="fa fa-user"></i> <?php echo $user["name"] ?> [ Admin ], <a href="<?php echo base_url('home/logout')?>">注销</a>
+        <i class="fa fa-user"></i>  <a href="<?php echo base_url('home/logout')?>">注销</a>
     </div>
     <ul class='breadcrumb' id='breadcrumb'>
         Current_pos
     </ul>
     <div style="padding: 0px 10px">                       
-        <div>this is body</div>
+        <form enctype="multipart/form-data" class="form-horizontal" method="post" action="<?php echo base_url('Uploadfile/post');?>" role="form">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">安装包</label>
+        <div class="col-sm-10">
+          <input type="file" id="uploadFile" name="uploadFile">
+            <p class="help-block">上传文件选择</p>
+        </div>
+      </div>
+     <div class="form-group">
+        <label class="col-sm-2 control-label">编号</label>
+        <div class="col-sm-4">
+          <input type="text" id="edtCode" class="form-control" name="edtCode">
+            <p class="help-block">文件编号</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" id="dosubmit" value="upload" class="btn btn-primary btn-lg">上传</button>        </div>
+      </div>
+    </form>
     </div>
 </div>

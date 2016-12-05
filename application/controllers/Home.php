@@ -53,6 +53,32 @@ class Home extends Front_Controller
 		$this->load->view("home/standard");
 		$this->load->view("share/footer");
 	}
+	public function post()
+	{
+
+		$config['upload_path']      = './uploads/';
+        $config['allowed_types']    = 'gif|jpg|png|mp3|pdf|doc|docx';
+        $config['max_size']     = 1000000;
+        $config['max_width']        = 1024;
+        $config['max_height']       = 768;
+        $config['file_name']  = time(); //文件名不使用原始名
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('uploadFile'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+
+            //$this->load->view('upload_form', $error);
+            $this->json($error);
+        }
+        else
+        {
+            $data = array('upload_data' => $this->upload->data());
+
+            //$this->load->view('upload_success', $data);
+            $this->json($data);
+        }
+	}
 	public function java()
 	{
 		$t = $this->input->get_post("tablename");
