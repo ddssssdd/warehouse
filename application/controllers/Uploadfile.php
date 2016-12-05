@@ -35,16 +35,17 @@ class Uploadfile extends Front_Controller
         }
         else
         {
-            $data = array('upload_data' => $this->upload->data());
-
-        	$result = $this->save($this->upload->data());
-        	if ($data["file_ext"] == '.apk'){
-        		$version = $this->input->post_get("version");
-        		$version =isset($version)?$version:1;
+        	$item = array();
+        	$version = $this->input->post_get("version");
+        	$version =isset($version)?$version:1;
+            
+            $result = $this->save($this->upload->data());
+        	if ($result->FileExt == '.apk'){
+        		$this->db->query("delete from Messages where Type='Install'");
         		$item = array("ToUserId" => 0, "Title" =>"Update apk","Link"=>$result->Link,"Type"=>"Install","Version" =>$version);
         		$this->db->insert("Messages",$item);
         	}
-            $this->json(array("result" =>$result,"files" =>$files));
+            $this->json(array("result" =>$result,"files" =>$files,"item" =>$item));
         }
 	}
 	private function save($data){

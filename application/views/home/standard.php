@@ -27,9 +27,9 @@
         </div>
       </div>
      <div class="form-group">
-        <label class="col-sm-2 control-label">编号</label>
+        <label class="col-sm-2 control-label">版本</label>
         <div class="col-sm-4">
-          <input type="text" id="edtCode" class="form-control" name="edtCode">
+          <input type="text" id="version" class="form-control" name="version">
             <p class="help-block">文件编号</p>
         </div>
       </div>
