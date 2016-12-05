@@ -18,16 +18,17 @@ class Uploadfile extends Front_Controller
 	{
 
 		$config['upload_path']      = './uploads/';
-        $config['allowed_types']    = 'gif|jpg|png|mp3|pdf|doc|docx';
+        $config['allowed_types']    = 'gif|jpg|png|mp3|pdf|doc|docx|apk';
         $config['max_size']     = 1000000;
         //$config['max_width']        = 1024;
         //$config['max_height']       = 768;
         $config['file_name']  = time(); //文件名不使用原始名
         $this->load->library('upload', $config);
-
+		$files = $_FILES;
         if ( ! $this->upload->do_upload('uploadFile'))
         {
-            $error = array('error' => $this->upload->display_errors());
+        	
+            $error = array('error' => $this->upload->display_errors(),"files" => $files);
 
             //$this->load->view('upload_form', $error);
             $this->json($error);
@@ -37,7 +38,13 @@ class Uploadfile extends Front_Controller
             $data = array('upload_data' => $this->upload->data());
 
         	$result = $this->save($this->upload->data());
-            $this->json($result);
+        	if ($data["file_ext"] == '.apk'){
+        		$version = $this->input->post_get("version");
+        		$version =isset($version)?$version:1;
+        		$item = array("ToUserId" => 0, "Title" =>"Update apk","Link"=>$result->Link,"Type"=>"Install","Version" =>$version);
+        		$this->db->insert("Messages",$item);
+        	}
+            $this->json(array("result" =>$result,"files" =>$files));
         }
 	}
 	private function save($data){
@@ -62,7 +69,7 @@ class Uploadfile extends Front_Controller
 		$query = $this->db->query("select * from Uploads where id=?",array($id));
 		if ($query->row()){
 			$result = $query->row();	
-			$result->link = base_url("uploads/".$result->FileName);
+			$result->Link = base_url("uploads/".$result->FileName);
 			return $result;
 			//return $result->link;
 		}
