@@ -44,6 +44,15 @@ class Uploadfile extends Front_Controller
         		$this->db->query("delete from Messages where Type='Install'");
         		$item = array("ToUserId" => 0, "Title" =>"Update apk","Link"=>$result->Link,"Type"=>"Install","Version" =>$version);
         		$this->db->insert("Messages",$item);
+        	}else{
+        		$item = array("ToUserId" => 1, 
+        			"Title" =>"Upload new file",
+        			"Link"=>$result->Link,
+        			"Type"=>"Message",
+        			"Message"=>$result->Link,
+        			"HasRead"=>0,
+        			"CreateDate"=> date("Y-m-d H:i:s"));
+        		$this->db->insert("Messages",$item);
         	}
             $this->json(array("result" =>$result,"files" =>$files,"item" =>$item));
         }
