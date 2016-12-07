@@ -7,7 +7,18 @@ class User_model extends MY_Model{
 		parent::__construt();	
 		
 	}
-	
+	public function login($username,$password)
+	{
+		$result = $this->find($username,$password);
+		if ($result){
+			$this->session->set_userdata('userId',$result->Id);
+			$this->session->set_userdata('name',$result->Name);
+			$this->session->set_userdata('email',$result->Email);	
+
+		}
+		return $result;
+		
+	}
 	function find($username,$password)
 	{
 		$query = $this->db->get_where("Users",array("Name"=>$username,"Password"=>$password));

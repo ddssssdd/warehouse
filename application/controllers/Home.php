@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Home extends Front_Controller
+class Home extends MY_Controller
 {
 	function __construct()
 	{
@@ -11,6 +11,17 @@ class Home extends Front_Controller
 		$data = $this->user;
 		$this->view('index',$data);		
 	}
+	public function login_json(){
+        $username = $this->input->post_get("Username");
+        $password = $this->input->post_get("Password");
+        $this->load->model("user_model","Model");
+        $result = $this->Model->login($username,$password);
+        if ($result){
+            return $this->success_json($result);
+        }else{
+            return $this->failure_json("Can not find match user");
+        }
+    }
 	public function login()
 	{
 		if(isset($_POST['username'])) {
@@ -19,15 +30,12 @@ class Home extends Front_Controller
 						//查询帐号，默认组1为超级管理员
 			$this->load->model("user_model");
 
-			$r = $this->user_model->find($username,$_POST["password"]);
+			$r = $this->user_model->login($username,$_POST["password"]);
 			
 			if(!$r) exit(json_encode(array('status'=>false,'tips'=>' 用户名或密码不正确')));			
 
 			//$ip = $this->input->ip_address();
 			
-			$this->session->set_userdata('userId',$r->Id);
-			$this->session->set_userdata('name',$r->Name);
-			$this->session->set_userdata('email',$r->Email);
 
 			redirect(base_url('store/index'));
 

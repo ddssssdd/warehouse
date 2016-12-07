@@ -49,12 +49,26 @@ class MY_Controller extends CI_Controller
 	{
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));		
 	}
+	protected function view_empty($view_file,$page_data=array(),$cache=false)
+	{
+		$view_file= $this->page_data['folder_name'].DIRECTORY_SEPARATOR.$this->page_data['controller_name'].DIRECTORY_SEPARATOR.$view_file;		
+		
+		$this->load->view('public/header',$page_data);
+		$this->load->view(reduce_double_slashes($view_file),$page_data);
+		$this->load->view('public/footer',$page_data);
+
+		
+	}
 }
 class Front_Controller extends MY_Controller
 {
 	public $user;
 	function __construct(){
 		parent::__construct();
+		if (!isset($this->session->userId)){
+			redirect(base_url("home/login"));
+			return;
+		}
 		$this->user = array("userId"=>$this->session->userId,"name" =>$this->session->name,"email"=>$this->session->email);
 	}
 	protected function view($view_file,$page_data=array(),$cache=false)
@@ -69,15 +83,6 @@ class Front_Controller extends MY_Controller
 
 		
 	}
-	protected function view_empty($view_file,$page_data=array(),$cache=false)
-	{
-		$view_file= $this->page_data['folder_name'].DIRECTORY_SEPARATOR.$this->page_data['controller_name'].DIRECTORY_SEPARATOR.$view_file;		
-		
-		$this->load->view('public/header',$page_data);
-		$this->load->view(reduce_double_slashes($view_file),$page_data);
-		$this->load->view('public/footer',$page_data);
-
-		
-	}
+	
 	
 }
