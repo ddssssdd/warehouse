@@ -88,7 +88,7 @@
                                 </a>  
                                 </td>
                             </tr>
-                            <tr ng-if="order_id==0">
+                            <tr>
                             <td>
                                 
                             </td>
@@ -237,8 +237,15 @@ angular.module("Warehouse-app").controller("StocksOutCtrl",function($scope,httpS
                 detail.changed = 0;
                 detail.Quantity = Math.abs(detail.Quantity);
             }else{
-                detail.changed = 1;
-                detail.Quantity = 0 - Math.abs(detail.Quantity);
+                if (detail.Id>0){
+                    detail.changed = 1;
+                    detail.Quantity = 0 - Math.abs(detail.Quantity);    
+                }else{
+                    if ($scope.order.details){
+                        $scope.order.details.splice(index,1);
+                    }  
+                }
+                
             }
         }else{
             if ($scope.order.details){
@@ -252,9 +259,12 @@ angular.module("Warehouse-app").controller("StocksOutCtrl",function($scope,httpS
         var result = "删除";
         if ($scope.order_id>0){
             if (detail.changed){
-                result = "取消"
+                result = "取消";
             }else{
-                result = "冲库"
+                if (detail.Id>0){
+                    result = "冲库";    
+                }
+                
             }
         }
         return result;

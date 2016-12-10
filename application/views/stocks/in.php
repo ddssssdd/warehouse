@@ -87,7 +87,7 @@
                                     </a>  
                                 </td>
                         </tr>
-                        <tr ng-if="order_id==0">
+                        <tr>
                             <td>
                                 
                             </td>
@@ -243,8 +243,15 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
                 detail.changed = 0;
                 detail.Quantity = Math.abs(detail.Quantity);
             }else{
-                detail.changed = 1;
-                detail.Quantity = 0 - Math.abs(detail.Quantity);
+                if (detail.Id>0){
+                    detail.changed = 1;
+                    detail.Quantity = 0 - Math.abs(detail.Quantity);    
+                }else{
+                    if ($scope.order.details){
+                        $scope.order.details.splice(index,1);
+                    }
+                }
+                
             }
         }else{
             if ($scope.order.details){
@@ -261,7 +268,9 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
             if (detail.changed){
                 result = "取消"
             }else{
-                result = "冲库"
+                if (detail.Id>0){
+                    result = "冲库"    
+                }
             }
         }
         return result;

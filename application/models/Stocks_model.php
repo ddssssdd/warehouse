@@ -52,7 +52,8 @@ class Stocks_model extends MY_Model
 			    "Price" => $item["Price"],
                 "Memo" =>$item["Memo"]
             );
-            if ($is_reset){
+            $old_detail_id = $item["Id"];
+            if ($is_reset && $old_detail_id){
                 $changed = isset($item["changed"])?$item["changed"]:0;
                 if ($changed){
                     $old_detail_id = $item["Id"];
@@ -193,10 +194,11 @@ class Stocks_model extends MY_Model
                 "Price" => $item["Price"],
                 "Memo" =>$item["Memo"]
             );
-            if ($is_reset){
+            $old_detail_id = $item["Id"];
+            if ($is_reset && $old_detail_id){
                 $changed = isset($item["changed"])?$item["changed"]:0;
                 if ($changed){
-                    $old_detail_id = $item["Id"];
+                    
                     $detail["ChangedId"] = $old_detail_id;
                     $this->db->insert("StockOutDetails",$detail);
                     $detail_id = $this->db->insert_id();
