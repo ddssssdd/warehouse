@@ -65,10 +65,20 @@ class Front_Controller extends MY_Controller
 	public $user;
 	function __construct(){
 		parent::__construct();
+		$this->load->library("session");
+
 		if (!isset($this->session->userId)){
-			redirect(base_url("home/login"));
-			return;
+			$userId = $this->input->get_post("userId");
+			$token = $this->input->get_post("token");
+			if (!isset($userId) && !isset($token)){
+				redirect(base_url("home/login"));
+				return;	
+			}
+			$data = array("userId"=>$userId,"name" =>"mobile","email" =>"@","token"=>$token);
+			$this->session->set_userdata($data);
+			
 		}
+
 		$this->user = array("userId"=>$this->session->userId,"name" =>$this->session->name,"email"=>$this->session->email);
 	}
 	protected function view($view_file,$page_data=array(),$cache=false)

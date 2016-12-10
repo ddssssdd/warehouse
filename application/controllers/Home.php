@@ -22,6 +22,10 @@ class Home extends MY_Controller
             return $this->failure_json("Can not find match user");
         }
     }
+    public function session(){
+    	$session = $this->session;
+    	$this->success_json($session);
+    }
 	public function login()
 	{
 		if(isset($_POST['username'])) {
