@@ -51,7 +51,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat = "item in stockIns">
-                            <td>{{item.EnteredDate}}</td>
+                            <td><a ng-href="<?php echo base_url('stocks/in'); ?>?id={{item.Id}}">{{item.EnteredDate}}</a></td>
                             <td>{{item.VendorName}}</td>
                             <td>{{item.InvoiceNo}}</td>
                             <td>{{item.TotalPrice | currency:'¥'}}</td>

@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="detail in order.details">
+                        <tr ng-repeat="detail in order.details" ng-class="{'info':detail.ChangedId,'danger':detail.changed}">
                                 <td>
                                 <input type="checkbox" name="pid[]" ng-model="detail.checked">
                                 </td>
@@ -82,12 +82,12 @@
                                 </td>
                                 
                                 <td>
-                                    <a href="javascript:void(0)" class="btn btn-default btn-xs" ng-click="remove_detail($index,$event)">
-                                    <span class="glyphicon glyphicon-remove"></span> 删除
-                                </a>  
+                                    <a ng-if="!detail.ChangedId" href="javascript:void(0)" class="btn btn-default" ng-click="remove_detail($index,$event)">
+                                    <span class="glyphicon glyphicon-remove"></span> {{getActionTitle(detail)}}
+                                    </a>  
                                 </td>
                         </tr>
-                        <tr>
+                        <tr ng-if="order_id==0">
                             <td>
                                 
                             </td>
@@ -168,6 +168,7 @@
 
 <script>
 
+var parameter_id = <?php echo $id; ?>;
 
 angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpService,Message){
 	$scope.products = [];
@@ -192,6 +193,15 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
                 $scope.stores = json.result;
             }
         });
+        $scope.order_id = parameter_id;
+        if ($scope.order_id>0){
+            httpService(base_url+"/stocks/stock_in",{id:$scope.order_id},function(json){
+                if (json.status){
+                    $scope.process_order(json.result);
+                }
+            });
+        }
+
     }
     $scope.process_order = function (order){
         order.TotalPrice = order.TotalPrice*1;
@@ -199,14 +209,19 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
         for(var i=0;i<order.details.length;i++){
             order.details[i].Price =order.details[i].Price *1;
             order.details[i].Quantity =order.details[i].Quantity *1;
-            order.details[i].Toal =order.details[i].Quantity *order.details[i].Price;
+            order.details[i].Total =order.details[i].Quantity *order.details[i].Price;
         }
         $scope.order = order;
+        $scope.order_id = $scope.order.Id;
     }
     $scope.add_detail = function(event)
     {
         
         $scope.order.details.push($scope.detail);
+        $scope.calculate_details();
+        $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:$scope.order.StoreId,Memo:''};
+    }
+    $scope.calculate_details = function(){
         var sum = 0;
         var q = 0;
         for(var i=0;i<$scope.order.details.length;i++){
@@ -220,12 +235,37 @@ angular.module("Warehouse-app").controller("StocksInCtrl",function($scope,httpSe
         }
         $scope.order.TotalPrice = sum;
         $scope.order.TotalNo = q;
-        $scope.detail = {Id:0,ProductId:0,Specification:'',Price:0.0,Quantity:0.0,StoreId:$scope.order.StoreId,Memo:''};
     }
     $scope.remove_detail = function(index,event){
-        if ($scope.order.details){
-            $scope.order.details.splice(index,1);
+        if ($scope.order_id>0){
+            var detail = $scope.order.details[index];
+            if (detail.changed){
+                detail.changed = 0;
+                detail.Quantity = Math.abs(detail.Quantity);
+            }else{
+                detail.changed = 1;
+                detail.Quantity = 0 - Math.abs(detail.Quantity);
+            }
+        }else{
+            if ($scope.order.details){
+                $scope.order.details.splice(index,1);
+            }    
         }
+        $scope.calculate_details();
+        
+    }
+    $scope.getActionTitle = function(detail)
+    {
+        var result = "删除";
+        if ($scope.order_id>0){
+            if (detail.changed){
+                result = "取消"
+            }else{
+                result = "冲库"
+            }
+        }
+        return result;
+
     }
     $scope.save = function(event){
         console.log($scope.order);

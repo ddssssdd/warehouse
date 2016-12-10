@@ -32,8 +32,17 @@ class Stocks_model extends MY_Model
                         "Memo" => $data["Memo"],
                         "StoreId" =>$data["StoreId"],
                         "EnteredDate" =>$data["EnteredDate"]?$data["EnteredDate"]:date("Y-m-d H:i:s"));
-        $this->db->insert("StockIns",$item);
-        $Id = $this->db->insert_id();
+        $Id =isset($data["Id"])?$data["Id"]:0;
+        $is_reset = FALSE;
+        if ($Id==0){
+            $this->db->insert("StockIns",$item);    
+            $Id = $this->db->insert_id();
+        }else{
+            $this->db->update("StockIns",$item,array("Id" => $Id));
+            $is_reset = TRUE;
+        }
+        
+        
         foreach($data["details"] as $item){
             $detail = array("StockInId" => $Id,
                 "StoreId" => $item["StoreId"],
@@ -43,9 +52,22 @@ class Stocks_model extends MY_Model
 			    "Price" => $item["Price"],
                 "Memo" =>$item["Memo"]
             );
-            $this->db->insert("StockInDetails",$detail);
-            $detail_id = $this->db->insert_id();
-            $this->UpdateInventory($detail_id,$detail,$UserId,TRUE);
+            if ($is_reset){
+                $changed = isset($item["changed"])?$item["changed"]:0;
+                if ($changed){
+                    $old_detail_id = $item["Id"];
+                    $detail["ChangedId"] = $old_detail_id;
+                    $this->db->insert("StockInDetails",$detail);
+                    $detail_id = $this->db->insert_id();
+                    $this->UpdateInventory($detail_id,$detail,$UserId,TRUE);  
+                    $this->db->update("StockInDetails",array("ChangedId" =>$detail_id),array("Id"=>$old_detail_id));  
+                }
+            }else{
+                $this->db->insert("StockInDetails",$detail);
+                $detail_id = $this->db->insert_id();
+                $this->UpdateInventory($detail_id,$detail,$UserId,TRUE);    
+            }
+            
         }
 
         if ($this->db->trans_status() === FALSE)
@@ -153,8 +175,16 @@ class Stocks_model extends MY_Model
                         "UserId" =>$UserId,
                         "Memo" => $data["Memo"],                        
                         "EnteredDate" =>$data["EnteredDate"]?$data["EnteredDate"]:date("Y-m-d H:i:s"));
-        $this->db->insert("StockOuts",$item);
-        $Id = $this->db->insert_id();
+        $Id =isset($data["Id"])?$data["Id"]:0;
+        $is_reset = FALSE;
+        if ($Id==0){
+            $this->db->insert("StockOuts",$item);
+            $Id = $this->db->insert_id();    
+        }else{
+            $this->db->update("StockOuts",$item,array("Id" => $Id));
+            $is_reset = TRUE;
+        }
+        
         foreach($data["details"] as $item){
             $detail = array("StockOutId" => $Id,
                 "StoreId" => $item["StoreId"],
@@ -163,9 +193,22 @@ class Stocks_model extends MY_Model
                 "Price" => $item["Price"],
                 "Memo" =>$item["Memo"]
             );
-            $this->db->insert("StockOutDetails",$detail);
-            $detail_id = $this->db->insert_id();
-            $this->UpdateInventory($detail_id,$detail,$UserId,FALSE);
+            if ($is_reset){
+                $changed = isset($item["changed"])?$item["changed"]:0;
+                if ($changed){
+                    $old_detail_id = $item["Id"];
+                    $detail["ChangedId"] = $old_detail_id;
+                    $this->db->insert("StockOutDetails",$detail);
+                    $detail_id = $this->db->insert_id();
+                    $this->UpdateInventory($detail_id,$detail,$UserId,FALSE);  
+                    $this->db->update("StockOutDetails",array("ChangedId" =>$detail_id),array("Id"=>$old_detail_id));  
+                }
+            }else{
+                $this->db->insert("StockOutDetails",$detail);
+                $detail_id = $this->db->insert_id();
+                $this->UpdateInventory($detail_id,$detail,$UserId,FALSE);
+            }
+            
         }
 
         if ($this->db->trans_status() === FALSE)
@@ -216,6 +259,24 @@ WHERE InventoryId=?
 ORDER BY UpdateSequ";
         $query = $this->db->query($sql,array($inventory_id,$inventory_id));
         return $query->result();   
+    }
+
+    public function find_in($id){
+        $query_main = $this->db->query("select * from StockIns where Id=?",array($id));
+        $query_details = $this->db->query("select * from StockInDetails where StockInId=?",array($id));
+        $row = $query_main->row();
+        $row->details = $query_details->result();
+        return $row;
+    }
+    public function find_out($id){
+        $query_main = $this->db->query("select * from StockOuts where Id=?",array($id));
+        $query_details = $this->db->query("select d.*,p.Name as ProductName, p.Specification 
+            from StockOutDetails d
+            left join Products p on d.ProductId = p.Id
+            where d.StockOutId=?",array($id));
+        $row = $query_main->row();
+        $row->details = $query_details->result();
+        return $row;
     }
 
 }

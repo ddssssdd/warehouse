@@ -11,6 +11,8 @@ class Stocks extends Front_Controller
 
     public function in()
     {
+        $id = $this->input->get_post("id");
+        $data["id"]= isset($id)?$id:0;
         $data["user"] = $this->user;
         $this->load->view("share/header");
 		$this->load->view("stocks/in",$data);
@@ -18,6 +20,8 @@ class Stocks extends Front_Controller
     }
     public function out()
     {
+        $id = $this->input->get_post("id");
+        $data["id"]= isset($id)?$id:0;
         $data["user"] = $this->user;
         $this->load->view("share/header");
         $this->load->view("stocks/out",$data);
@@ -70,6 +74,16 @@ class Stocks extends Front_Controller
        $inventory_id = $this->input->post_get("inventory_id");
        $data = $this->Model->details($inventory_id,$store_id,$product_id);
        return $this->success_json($data);
+    }
+    public function stock_in(){
+        $id = $this->input->get_post("id");
+        $result = $this->Model->find_in($id);
+        return $this->success_json($result);
+    }
+    public function stock_out(){
+        $id = $this->input->get_post("id");
+        $result = $this->Model->find_out($id);
+        return $this->success_json($result);
     }
     
 }
