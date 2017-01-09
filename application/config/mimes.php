@@ -165,4 +165,5 @@ return array(
 	'vtt'	=>	array('text/vtt', 'text/plain'),
 	'ico'	=>	array('image/x-icon', 'image/x-ico', 'image/vnd.microsoft.icon'),
 	'apk'   => array('application/octet-stream'),
+	'zip'   => array('application/octet-stream'),
 );
