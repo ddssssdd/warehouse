@@ -12,9 +12,7 @@
         <h3 class="page-header">
                 供应商 
         </h3>
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <strong>友情提示</strong> Please believe in God.
-        </div> 
+       
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="glyphicon glyphicon-th-list"></i> 编辑区域

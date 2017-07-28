@@ -84,6 +84,9 @@
                             <a href="<?php echo base_url("vendor/index") ?>"> <i class="fa fa-gear"></i><span>供应商</span></a>
                         </li>
                         <li>
+                            <a href="<?php echo base_url("store/manage") ?>"> <i class="fa fa-gear"></i><span>仓库</span></a>
+                        </li>
+                        <li>
                             <a href ="http://fontawesome.dashgame.com/" target="_blank"><i class="fa fa-flag"></i><span>图标选择</span></a>
                         </li>
                     </ul>

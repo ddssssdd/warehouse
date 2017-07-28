@@ -173,12 +173,16 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
         $scope.store = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Manager:0};
     }
     $scope.remove_store = function(store,index,event){
-        var url = base_url + "/store/remove";
-        httpService(url,{Id:store.Id},function(json){
-            if (json.status){
-                $scope.stores.splice(index,1);
-            }
+        var production = $scope.stores[index];
+        Message.confirm("请确认删除"+production.Name+"?",function(){
+            var url = base_url + "/store/remove";
+            httpService(url,{Id:store.Id},function(json){
+                if (json.status){
+                    $scope.stores.splice(index,1);
+                }
+            });  
         });
+        
     }
     $scope.find_user = function(id){
         for(var i=0;i<$scope.users.length;i++){

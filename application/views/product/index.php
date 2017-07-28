@@ -15,9 +15,7 @@
                 <span class="glyphicon glyphicon-plus"></span> 新建产品</a>
                 产品管理
         </h3>
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <strong>友情提示</strong> Please believe in God.
-        </div> 
+        
         <div class="panel panel-default grid">
              <div class="panel-heading">
                 <i class="glyphicon glyphicon-th-list"></i> 产品列表
