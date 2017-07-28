@@ -154,12 +154,16 @@ angular.module("Warehouse-app").controller("ClientCtrl",function($scope,httpServ
         $scope.client = EMPTY_CLIENT;
     }
     $scope.remove_client = function(client,index,event){
-        var url = base_url + "client/remove";
-        httpService(url,{id:client.Id},function(json){
-            if (json.status){
-                $scope.clients.splice(index,1);
-            }
+        var production = $scope.clients[index];
+        Message.confirm("请确认删除"+production.Name+"?",function(){
+            var url = base_url + "client/remove";
+            httpService(url,{id:client.Id},function(json){
+                if (json.status){
+                    $scope.clients.splice(index,1);
+                }
+            });   
         });
+        
     }
    
 

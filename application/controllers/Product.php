@@ -76,6 +76,15 @@ class Product extends Front_Controller
         return $this->success_json($data);
 
     }
+    public function Remove()
+    {
+        $id = $this->input->post_get("id");
+        if (!$id){
+            return $this->failure_json("Please input the product Id");
+        }
+        $this->Model->RemoveItem($id);
+        $this->success_json($id);
+    }
     public function Find()
     {
         $id = $this->input->post_get("id");

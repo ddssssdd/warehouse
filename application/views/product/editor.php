@@ -130,7 +130,7 @@
 
  <script>
 
-angular.module("Warehouse-app").controller("ProductEditCtrl",function($scope,httpService){
+angular.module("Warehouse-app").controller("ProductEditCtrl",function($scope,httpService,Message){
 	$scope.product = {};
     $scope.current_product = {};
     
@@ -152,7 +152,8 @@ angular.module("Warehouse-app").controller("ProductEditCtrl",function($scope,htt
             httpService(url,$scope.product,function(json){
                 console.log(json);
                 if (json.status){
-                    $scope.products = json.result;
+                    Message.show("操作成功");
+                    //window.close();
                 }
             });
         }

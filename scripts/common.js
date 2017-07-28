@@ -58,7 +58,7 @@ angular.module("commonService",["ngMd5"], function($httpProvider) { //fix angula
 		closeAll:function(){
 			layer.closeAll();
 		},
-		confirm:function(message,btn1,btn2,callback1,callback2){
+		confirm_all:function(message,btn1,btn2,callback1,callback2){
 			btn1 = btn1 || "Cacel";
 			btn2 = btn2 || "OK";
 			var index = layer.confirm(message,{btn:[btn1,btn2]},function(){
@@ -68,6 +68,9 @@ angular.module("commonService",["ngMd5"], function($httpProvider) { //fix angula
 				layer.close(index);
 				if (callback2) callback2();
 			});
+		},
+		confirm:function(message,okcallback){
+			this.confirm_all(message,'取消','确认',null,okcallback);
 		},
 		msg:function(message){
 			layer.msg(message);

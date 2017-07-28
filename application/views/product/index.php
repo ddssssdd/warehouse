@@ -83,7 +83,7 @@
 <script>
 
 
-angular.module("Warehouse-app").controller("ProductCtrl",function($scope,httpService){
+angular.module("Warehouse-app").controller("ProductCtrl",function($scope,httpService,Message){
 	$scope.products = [];
     $scope.current_product = {};
     $scope.items = [];
@@ -115,12 +115,17 @@ angular.module("Warehouse-app").controller("ProductCtrl",function($scope,httpSer
         }
     }
     $scope.remove_product = function(event,product,index){
-        var url = base_url + "/product/remove";
-        httpService(url,{id:product.Id},function(json){
-            if (json.status){
-                $scope.products.splice(index,1);
-            }
+        var production = $scope.products[index];
+        Message.confirm("请确认删除"+production.Name+"?",function(){
+            var url = base_url + "/product/remove";
+            httpService(url,{id:product.Id},function(json){
+                if (json.status){
+                    $scope.products.splice(index,1);
+                }
+            });    
         });
+        return;
+        
     }
     $scope.reload();
 

@@ -155,12 +155,16 @@ angular.module("Warehouse-app").controller("VendorCtrl",function($scope,httpServ
         $scope.vendor = {Id:0,Name:'',Address:'',Phone:'',Fax:'',Email:'',ContactCellphone:'',ContactName:''};
     }
     $scope.remove_vendor = function(vendor,index,event){
-        var url = base_url + "/vendor/remove";
-        httpService(url,{Id:vendor.Id},function(json){
-            if (json.status){
-                $scope.vendors.splice(index,1);
-            }
+        var production = $scope.vendors[index];
+        Message.confirm("请确认删除"+production.Name+"?",function(){
+            var url = base_url + "/vendor/remove";
+            httpService(url,{Id:vendor.Id},function(json){
+                if (json.status){
+                    $scope.vendors.splice(index,1);
+                }
+            });   
         });
+        
     }
    
 
