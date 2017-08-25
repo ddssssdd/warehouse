@@ -2,7 +2,7 @@
 <div class="col-sm-3 col-md-2 sidebar">
     <aside>
         <div class="list-group">
-            <a href="#" class="list-group-item disabled">库房</a>
+            <a href="#" class="list-group-item disabled">仓库</a>
             
             <a href="javascript:void(0)"
                  class="list-group-item {{current_store.Id==item.Id?'current-active':''}}"
@@ -40,11 +40,15 @@
                 <div class="panel-tools">
 
                     <div class="btn-group">
+                        
                         <a href="<?php echo base_url('store/manage');?>" ng-click="reload($event);" class="btn  btn-sm "><span class="glyphicon glyphicon-edit"></span> 管理</a>
 
                         
                     </div>
                     <div class="badge">{{products.length}}</div>
+                    <div class="badge">
+                        <input type="checkbox" ng-model="isShowHas"/>只显示有库存的
+                    </div>
                 </div>
             </div>
             <div class="panel-body">
@@ -59,13 +63,13 @@
                             <th>出库低价</th>
                             <th>出库高价</th> 
                             <th>库存</th>
-                            <th>描述</th>
+                            <th>单位</th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in products">
+                        <tr ng-repeat="item in products | filter:showFilter" ng-class="item.Quantity<=0.00?'info':''">
                         <td>{{item.Id}}</td>
                         <td>{{item.Name}}</td>
                         <td>{{item.Specification}}</td>
@@ -73,8 +77,8 @@
                         <td>{{item.MaxPrice | currency:'￥'}}</td>
                         <td>{{item.MinOutPrice | currency:'￥'}}</td>
                         <td>{{item.MaxOutPrice | currency:'￥'}}</td>
-                        <td>{{item.Quantity}}({{item.Unit}})</td>
-                        <td>{{product_description(item)}}</td>
+                        <td>{{item.Quantity}}</td>
+                        <td>({{item.Unit}})</td>
                         <td>{{item.Barcode}}</td>
                         <td>
                              <a href="<?php echo base_url('store/detail') ?>?inventory_id={{item.InventoryId}}&product_id={{item.ProductId}}&store_id={{current_store.Id}}"  target="_blank" class="btn btn-default btn-xs">
@@ -103,6 +107,8 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
     $scope.products = [];
     $scope.stockIns = [];
     $scope.stockOuts = [];
+    $scope.isShowHas = false;
+
     $scope.init_data = function()
     {
         var url = "<?php echo base_url('store/items')?>";
@@ -123,7 +129,12 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
         });
         
     }
-    
+    $scope.showFilter =function(item){
+        if ($scope.isShowHas){
+            return item.Quantity >0.00;
+        }
+        return true;
+    }
     $scope.select_store =function(item){
         $scope.current_store = item;
         $scope.load_inventory();
@@ -141,7 +152,10 @@ angular.module("Warehouse-app").controller("StoreCtrl",function($scope,httpServi
     } 
     $scope.product_description = function(p)
     {
-        return p.Unit+'-('+p.Length+','+p.Width+','+p.Height+')-'+p.Brand;
+        return p.Unit;
+        /*
+        return (p.Unit?p.Unit:'')+'-('+(p.Length?p.Length:'0')+','+(p.Width?p.Width:'0')+','+(p.Height?p.Height:'0')+')-'+(p.Brand?p.Brand:'');
+        */
     }
     $scope.init_data();
 });
